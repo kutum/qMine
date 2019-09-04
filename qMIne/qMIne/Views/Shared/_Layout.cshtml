@@ -46,7 +46,7 @@
             $("#sendRcon").click(function () {
 
                 var command = $("#commandRcon").val();
-
+                if (command != "") $("#Send").prop('disabled', true);
                 $.ajax({
                     url: '@Url.Action("CallRcon", "Home")',
                     type: 'POST',
@@ -54,11 +54,39 @@
                     cache: false,
 
                     success: function (Data) {
-                        document.getElementById('answer').innerHTML = Data;
+                        logSuccess(Data);
                     }
                 });
             });
         });
+
+        function logSuccess(Data) {
+            datetime = getCurrentTime();
+            datetime += " <- ";
+            var fullLog = datetime + Data;
+            $("#ulconsole").append('<li>' + fullLog + '</li>');
+            $("#btnSend").prop('disabled', false);
+            clearOldLogs();
+        }
+
+        function clearOldLogs() {
+            var logItemSize = $("#groupConsole li").size();
+            if (logItemSize > 50) {
+                $('#groupConsole li:first').remove();
+            }
+        }
+
+        function getCurrentTime()
+        {
+	        var currentdate = new Date(); 
+	        var datetime = currentdate.getDate() + "/"
+          + (currentdate.getMonth()+1)  + "/" 
+          + currentdate.getFullYear() + " @@ "  
+          + currentdate.getHours() + ":"  
+          + currentdate.getMinutes() + ":" 
+          + currentdate.getSeconds();
+          return datetime;
+        }
     </script>
 
 </body>
