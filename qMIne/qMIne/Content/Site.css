@@ -1,6 +1,8 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
+    /*background: url(img/bigscreened.png) repeat; */
+    background-color:lightgrey;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -20,5 +22,24 @@
 input,
 select,
 textarea {
-    max-width: 280px;
+    /*max-width: 280px;*/
+}
+
+.container-fluid {
+    min-height: 100%;
+}
+
+#footer {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.content {
+    height: 100%;
+    position: relative;
+}
+
+.console, .status {
+    margin-bottom: 5%;
 }

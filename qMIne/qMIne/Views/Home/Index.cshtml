@@ -2,26 +2,41 @@
     ViewBag.Title = "Home Page";
 }
 
-<div class="jumbotron">
+@*<div class="jumbotron">
     <h2>qMine</h2>
     <p class="lead">Minecraft Server Control</p>
-    @*<p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>*@
-</div>
+    @*<p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+</div>*@
 
-<div class="row">
-    <div class="col-md-8">
-        <h4>rcon console</h4>
-       @*<div id="answer" style="border:1px solid black; position:relative"> </div>*@
-        <div id="console">
-            <ul id="ulconsole" style="height: 300px; overflow: auto;">
-                <li>Welcome to Console</li>
-            </ul>
-        </div>
-        <div>
-            <input type="text" id="commandRcon" class="col-md-10" />
-            <input type="submit" id="sendRcon" value="Send" />
-        </div>
 
+    
+    <div class="row content container-fluid" style="padding-top:10px">
+        <div class="col-md-8 col-lg-8 console">
+
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h6 class="card-title">qMine rcon console</h6>
+                </div>
+                <div id="console" class="card-body">
+                    <ul id="ulconsole" class="list-group" style="height: 300px; overflow: auto;">
+                        <li class="list-group-item-info list-group-item">Welcome to Console</li>
+                    </ul>
+                </div>
+            </div>
+                <div class="checkbox card card-body mb-3" style="display:inline-block; width:100%">
+                    <label style="padding-top: 1%;">
+                        <input type="checkbox" id="chkAutoScroll" checked="checked"> Auto scroll
+                    </label>
+                    <button type="button" class="btn btn-primary" tabindex="0" id="btnClearLog" style="float:right;"><span class="glyphicon glyphicon-remove-sign"></span> Clear Console</button>
+                </div>
+
+                <div class="input-group">
+                    <input type="text" id="commandRcon" class="form-control"/>
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-primary" tabindex="-1" id="sendRcon"><span class="glyphicon glyphicon-arrow-right"></span> Send</button>
+                    </div>
+                </div>
+            
+        </div>
     </div>
-</div>
 

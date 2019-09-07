@@ -9,31 +9,33 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+
+    <nav class="navbar-expand-lg navbar-light bg-light">
         <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("qMine", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contacts", "Contact", "Home")</li>
+
+            @Html.ActionLink("qMine", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="navbar-collapse collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">@Html.ActionLink("Home", "Index", "Home", new { @class = "nav-link" }) </li>
+                    <li class="nav-item active">@Html.ActionLink("About", "About", "Home", new { @class = "nav-link" }) </li>
+                    <li class="nav-item active">@Html.ActionLink("Contacts", "Contact", "Home", new { @class = "nav-link" }) </li>
                 </ul>
             </div>
         </div>
-    </div>
+    </nav>
     <div class="container body-content">
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year – qMine ASP.NET</p>
-        </footer>
+        @*<hr />*@
+        @*<footer>
+            <div class="container-fluid">
+                <p>&copy; @DateTime.Now.Year – qMine ASP.NET</p>
+            </div>
+        </footer>*@
     </div>
 
     @Scripts.Render("~/bundles/jquery")
@@ -47,6 +49,9 @@
 
                 var command = $("#commandRcon").val();
                 if (command != "") $("#Send").prop('disabled', true);
+
+                
+
                 $.ajax({
                     url: '@Url.Action("CallRcon", "Home")',
                     type: 'POST',
@@ -54,25 +59,73 @@
                     cache: false,
 
                     success: function (Data) {
-                        logSuccess(Data);
+
+                        var datetime = getCurrentTime();
+                        datetime += " -> ";
+                        datetime += command;
+
+                        $("#ulconsole").append('<li class="list-group-item list-group-item-success">' + datetime + '</li>');
+                        clearOldLogs();
+
+                        if (Data.indexOf("Unknown command") != -1) {
+                            logError(Data);
+                            clearOldLogs();
+                            return;
+                        }
+                        else if (Data.indexOf("Usage") != -1) {
+                            logWarning(Data);
+                            return;
+                        }
+                        else
+                            logSuccess(Data);
                     }
-                });
+                }).fail(
+                    function () {
+                        logError(Data);
+                        }
+                    );
             });
         });
 
+        $("#btnClearLog").click(function () {
+            $("#ulconsole").empty();
+        });
+
         function logSuccess(Data) {
+
             datetime = getCurrentTime();
             datetime += " <- ";
             var fullLog = datetime + Data;
-            $("#ulconsole").append('<li>' + fullLog + '</li>');
+            $("#ulconsole").append('<li class="list-group-item list-group-item-info" >' + fullLog + '</li>');
             $("#btnSend").prop('disabled', false);
             clearOldLogs();
+            if ($("#chkAutoScroll").is(':checked')) scrollLogsDown();
+        }
+
+        function logError(Data) {
+            datetime = getCurrentTime();
+            datetime += " <- ";
+            datetime += "Error!";
+            $("#ulconsole").append('<li class="list-group-item list-group-item-danger">' + Data + '</li>');
+            $("#btnSend").prop('disabled', false);
+            clearOldLogs();
+            if ($("#chkAutoScroll").is(':checked')) scrollLogsDown();
+        }
+
+        function logWarning(Data) {
+            datetime = getCurrentTime();
+            datetime += " <- ";
+            var fullLog = datetime + Data;
+            $("#ulconsole").append('<li class="list-group-item list-group-item-warning">' + fullLog + '</li>');
+            $("#btnSend").prop('disabled', false);
+            clearOldLogs();
+            if ($("#chkAutoScroll").is(':checked')) scrollLogsDown();
         }
 
         function clearOldLogs() {
-            var logItemSize = $("#groupConsole li").size();
+            var logItemSize = $("#ulconsole li").size;
             if (logItemSize > 50) {
-                $('#groupConsole li:first').remove();
+                $('#ulconsole li:first').remove();
             }
         }
 
@@ -86,6 +139,10 @@
           + currentdate.getMinutes() + ":" 
           + currentdate.getSeconds();
           return datetime;
+        }
+
+        function scrollLogsDown() {
+            $("#ulconsole").scrollTop($("#ulconsole").get(0).scrollHeight);
         }
     </script>
 
