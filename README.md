@@ -1,2 +1,4 @@
 # qMine
-Minecraft_Status
+Minecraft status webpage
+
+In progress ...
