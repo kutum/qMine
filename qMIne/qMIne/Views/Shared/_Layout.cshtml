@@ -7,27 +7,35 @@
     <title>@ViewBag.Title – приложение ASP.NET</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+
 </head>
+
 <body>
 
-    <nav class="navbar-expand-lg navbar-light bg-light">
-        <div class="container">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 
-            @Html.ActionLink("qMine", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+        <a class="navbar-brand" href="@Url.Action("Index", "Home")">qMine</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTop" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+        <div class="collapse navbar-collapse" id="navbarTop">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="@Url.Action("Index", "Home")">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="@Url.Action("About", "Home")">About</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="@Url.Action("Contact", "Home")">Contact</a>
+                </li>
 
-            <div class="navbar-collapse collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">@Html.ActionLink("Home", "Index", "Home", new { @class = "nav-link" }) </li>
-                    <li class="nav-item active">@Html.ActionLink("About", "About", "Home", new { @class = "nav-link" }) </li>
-                    <li class="nav-item active">@Html.ActionLink("Contacts", "Contact", "Home", new { @class = "nav-link" }) </li>
-                </ul>
-            </div>
+            </ul>
         </div>
     </nav>
+
+
     <div class="container body-content">
         @RenderBody()
         @*<hr />*@
@@ -40,7 +48,7 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-
+    @Scripts.Render("~/bundles/rconJS")
     @RenderSection("scripts", required: false)
 
     <script type="text/javascript">
@@ -48,9 +56,9 @@
             $("#sendRcon").click(function () {
 
                 var command = $("#commandRcon").val();
-                if (command != "") $("#Send").prop('disabled', true);
+                if (command.length == 0) return;
 
-                
+                if (command != "") { $("#Send").prop('disabled', true); };
 
                 $.ajax({
                     url: '@Url.Action("CallRcon", "Home")',
@@ -87,63 +95,7 @@
             });
         });
 
-        $("#btnClearLog").click(function () {
-            $("#ulconsole").empty();
-        });
-
-        function logSuccess(Data) {
-
-            datetime = getCurrentTime();
-            datetime += " <- ";
-            var fullLog = datetime + Data;
-            $("#ulconsole").append('<li class="list-group-item list-group-item-info" >' + fullLog + '</li>');
-            $("#btnSend").prop('disabled', false);
-            clearOldLogs();
-            if ($("#chkAutoScroll").is(':checked')) scrollLogsDown();
-        }
-
-        function logError(Data) {
-            datetime = getCurrentTime();
-            datetime += " <- ";
-            datetime += "Error!";
-            $("#ulconsole").append('<li class="list-group-item list-group-item-danger">' + Data + '</li>');
-            $("#btnSend").prop('disabled', false);
-            clearOldLogs();
-            if ($("#chkAutoScroll").is(':checked')) scrollLogsDown();
-        }
-
-        function logWarning(Data) {
-            datetime = getCurrentTime();
-            datetime += " <- ";
-            var fullLog = datetime + Data;
-            $("#ulconsole").append('<li class="list-group-item list-group-item-warning">' + fullLog + '</li>');
-            $("#btnSend").prop('disabled', false);
-            clearOldLogs();
-            if ($("#chkAutoScroll").is(':checked')) scrollLogsDown();
-        }
-
-        function clearOldLogs() {
-            var logItemSize = $("#ulconsole li").size;
-            if (logItemSize > 50) {
-                $('#ulconsole li:first').remove();
-            }
-        }
-
-        function getCurrentTime()
-        {
-	        var currentdate = new Date(); 
-	        var datetime = currentdate.getDate() + "/"
-          + (currentdate.getMonth()+1)  + "/" 
-          + currentdate.getFullYear() + " @@ "  
-          + currentdate.getHours() + ":"  
-          + currentdate.getMinutes() + ":" 
-          + currentdate.getSeconds();
-          return datetime;
-        }
-
-        function scrollLogsDown() {
-            $("#ulconsole").scrollTop($("#ulconsole").get(0).scrollHeight);
-        }
+        
     </script>
 
 </body>
