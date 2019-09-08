@@ -11,7 +11,14 @@ namespace qMIne.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            if (Request.IsAuthenticated)
+            {
+                return View();
+            }
+            else
+            {
+              return  Redirect("Account/Login");
+            }
         }
 
         [HttpPost]
