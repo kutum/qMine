@@ -23,19 +23,19 @@
                         <div class="input-group-prepend">
                             @Html.LabelFor(m => m.Password, new { @class = "input-group-text" })
                         </div>
-                        @Html.TextBoxFor(m => m.Password, new { @class = "form-control" })
+                        @Html.TextBoxFor(m => m.Password, new { @class = "form-control", type="password" })
                     </div>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             @Html.LabelFor(m => m.ConfirmPassword, new { @class = "input-group-text" })
                         </div>
-                        @Html.TextBoxFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                        @Html.TextBoxFor(m => m.ConfirmPassword, new { @class = "form-control", type = "password" })
                     </div>
 
                     @Html.ValidationSummary("", new { @class = "text-danger" })
 
                     <div class="mb-3">
-                        <input type="submit" class="btn btn-dark" value="Confirm" />
+                        <input type="submit" class="btn btn-dark" value="Confirm" style="float:right"/>
                     </div>
                 }
             </div>
