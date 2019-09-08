@@ -84,6 +84,14 @@
                             logWarning(Data);
                             return;
                         }
+                        else if (Data.indexOf("Exception") != -1) {
+                            logError(Data);
+                            return;
+                        }
+                        else if (Data.indexOf("Server") != -1) {
+                            logError(Data);
+                            return;
+                        }
                         else
                             logSuccess(Data);
                     }

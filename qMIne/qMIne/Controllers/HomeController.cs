@@ -26,7 +26,11 @@ namespace qMIne.Controllers
                     rcon.setupStream("192.168.1.15", password: "myofrene");
                     answer = rcon.sendMessage(RCONMessageType.Command, commandRcon);
 
-                    if(rcon.ErrorMsg.Length>0)
+                    if(rcon.isInit == false)
+                    {
+                        answer = "Server is offline";
+                    }
+                    else if(rcon.ErrorMsg.Length>0)
                     {
                         answer = rcon.ErrorMsg;
                     }
