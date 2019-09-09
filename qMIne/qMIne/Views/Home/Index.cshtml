@@ -54,6 +54,7 @@
                     <img class="d-inline" src="~/Content/img/lamp_offline.png" />
                     <h6 class="card-title d-inline" id="Online">Offline</h6>
                 }
+                <button id="refreshStatus" class="btn btn-outline-dark float-xl-right d-inline"><span class=" fas fa-sync"></span></button>
 
             </div>
             <div class="card-body">
@@ -75,9 +76,6 @@
                     </div>
                     
             </div>
-            @*<div class="card-footer">
-                <input type="button" id="refreshStatus" class="btn btn-outline-dark float-xl-right" value="Refresh" />
-            </div>*@
         </div>
     </div>
 </div>
@@ -86,8 +84,8 @@
 
 <script type="text/javascript">
 
-    $("#refreshStatus").click(function () {
-        $.ajax({
+    function getStatus() {
+         $.ajax({
             url: '@Url.Action("GetStatus","Home")',
             type: 'GET',
             cache: false,
@@ -95,7 +93,13 @@
                 refreshItems(Data);
             }
             });
+    }
+
+
+    $("#refreshStatus").click(function () {
+        getStatus();
     });
+
     function refreshItems(Data) {
         document.getElementById('Address').childNodes[0].textContent = Data.Address + " : " + Data.Port;
 
@@ -112,9 +116,7 @@
         document.getElementById('Players').childNodes[0].textContent = Data.CurrentPlayers + "/" + Data.MaximumPlayers;
     }
 
-
-
-    function refreshStatus() {
+   @* function refreshStatus() {
          $.ajax({
             url: '@Url.Action("GetStatus","Home")',
             type: 'GET',
@@ -123,16 +125,27 @@
                 refreshItems(Data);
             }
             });
-    }
+    }*@
 
-    setInterval(refreshStatus, 5000);
+    //setInterval(refreshStatus, 5000);
 </script>
 
 <script type="text/javascript">
-        $(function () {
-            $("#sendRcon").click(function () {
 
-                var command = $("#commandRcon").val();
+    $("#sendRcon").click(function () {
+            sendRcon();
+    });
+
+    $("#commandRcon").keyup(function (event) {
+        if (event.keyCode == 13) {
+            sendRcon();
+            document.getElementById('commandRcon').value = '';
+        }
+        //debugger;
+    });
+
+    function sendRcon() {
+        var command = $("#commandRcon").val();
                 if (command.length == 0) return;
 
                 if (command != "") { $("#Send").prop('disabled', true); };
@@ -177,6 +190,5 @@
                         logError(Data);
                         }
                     );
-            });
-        });
+    }
 </script>

@@ -26,13 +26,13 @@ namespace qMIne.Controllers
                 {
                     ViewData["Error"] = "Error: " + ex.Message;
 
-                    return Redirect("Account/Login");
+                    return Redirect("~/Account/Login");
                 }
 
             }
             else
             {
-                return Redirect("Account/Login");
+                return Redirect("~/Account/Login");
             }
         }
 
