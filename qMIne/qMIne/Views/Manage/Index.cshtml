@@ -13,7 +13,16 @@
     <div class="col-lg-8">
         <div class="card">
             <div class="card-header">
-                <h5 class="card-title">@ViewBag.Title</h5>
+                <h5 class="card-title d-inline">@ViewBag.Title </h5>
+
+                @if (ViewBag.StatusMessage == "Error")
+                {
+                    <p style="padding-left:10px" class="d-inline text-warning">@ViewBag.StatusMessage</p>
+                }
+                else
+                {
+                    <p style="padding-left:10px" class="d-inline text-success">@ViewBag.StatusMessage</p>
+                }
             </div>
 
             <div class="card-body">
@@ -40,10 +49,10 @@
                 }
                 else
                 {
-                    @Html.ActionLink("Создать", "SetPassword", "Manage", new { id = 1 }, new { @class = "btn btn-dark" })
+                    @Html.ActionLink("Create password", "SetPassword", "Manage", new { id = 1 }, new { @class = "btn btn-dark" })
                 }
 
-                <p class="text-success">@ViewBag.StatusMessage</p>
+               
             </div>
         </div>
     </div>

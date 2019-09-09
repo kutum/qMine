@@ -58,12 +58,14 @@ namespace qMIne.Controllers
         public async Task<ActionResult> Index(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
-                message == ManageMessageId.ChangePasswordSuccess ? "Ваш пароль изменен."
-                : message == ManageMessageId.SetPasswordSuccess ? "Пароль задан."
+                message == ManageMessageId.ChangePasswordSuccess ? "Password changed"
+                : message == ManageMessageId.SetPasswordSuccess ? "Password set"
                 : message == ManageMessageId.SetTwoFactorSuccess ? "Настроен поставщик двухфакторной проверки подлинности."
-                : message == ManageMessageId.Error ? "Произошла ошибка."
+                : message == ManageMessageId.Error ? "Error"
                 : message == ManageMessageId.AddPhoneSuccess ? "Ваш номер телефона добавлен."
                 : message == ManageMessageId.RemovePhoneSuccess ? "Ваш номер телефона удален."
+                : message == ManageMessageId.Saved ? "Saved"
+                : message == ManageMessageId.SaveError ? "Error"
                 : "";
 
             var userId = User.Identity.GetUserId();
@@ -98,10 +100,18 @@ namespace qMIne.Controllers
                 {
                     context.Entry(model).State = EntityState.Added;
                 }
-             
-                await context.SaveChangesAsync();
+                try
+                { 
+                    await context.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    RedirectToAction("Index", new { Message = ManageMessageId.SaveError });
+                }
             }
-            return Redirect("Index");
+
+
+            return RedirectToAction("Index", new { Message = ManageMessageId.Saved });
         }
 
         //
@@ -411,7 +421,9 @@ namespace qMIne.Controllers
             SetPasswordSuccess,
             RemoveLoginSuccess,
             RemovePhoneSuccess,
-            Error
+            Error,
+            Saved,
+            SaveError
         }
 
 #endregion
