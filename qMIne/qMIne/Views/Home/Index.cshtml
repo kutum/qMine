@@ -101,11 +101,11 @@
 
         if (Data.ServerUp == true) {
             document.getElementById('Online').childNodes[0].textContent = "Online";
-            document.getElementById('redstoneLamp').src = "/Content/img/lamp_online.png";
+            document.getElementById('redstoneLamp').src = '@Url.Content("~/Content/img/lamp_online.png")';
         }
         else {
             document.getElementById('Online').childNodes[0].textContent = "Offline";
-            document.getElementById('redstoneLamp').src = "/Content/img/lamp_offline.png";
+            document.getElementById('redstoneLamp').src = '@Url.Content("~/Content/img/lamp_offline.png")';
         }
 
         document.getElementById('Version').childNodes[0].textContent = Data.Version;
