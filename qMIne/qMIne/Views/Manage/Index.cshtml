@@ -1,7 +1,13 @@
-﻿@model qMIne.Models.IndexViewModel
+﻿@using qMIne.Models;
+@using qMIne.Context;
+@model IndexViewModel
+ 
 @{
     ViewBag.Title = "Account";
 }
+
+
+
 
 <div class="row content container-fluid" style="padding-top:10px">
     <div class="col-lg-8">
@@ -9,90 +15,35 @@
             <div class="card-header">
                 <h5 class="card-title">@ViewBag.Title</h5>
             </div>
+
             <div class="card-body">
 
-
-                
-                <div>
-                    <div class="input-group">
-                        <div class="input-group-text">
-
-                            <label>Password:</label>
-
-                        </div>
-                        @if (Model.HasPassword)
+                @{
+                    using (var context = new ApplicationDbContext())
+                    {
+                        var serverCredentials = context.ServerCredentials.FirstOrDefault(x => x.Name == User.Identity.Name);
+                        if (serverCredentials != null)
                         {
-                            @Html.ActionLink("Смена пароля", "ChangePassword", "Manage", new { id = 1 }, new { @class = "btn btn-dark" })
+                            @Html.Partial("ServerCredentials", serverCredentials, new ViewDataDictionary())
                         }
                         else
                         {
-                            @Html.ActionLink("Создать", "SetPassword", "Manage", new { id = 1 }, new { @class = "btn btn-dark" })
+                            @Html.Partial("ServerCredentials", new ServerCredentials(User.Identity.Name), new ViewDataDictionary())
+
                         }
-                    </div>
-                    </dd>
-                    @*<dt>Внешние имена входа:</dt>*@
-                    @*<dd>
-            @Model.Logins.Count [
-            @Html.ActionLink("Управление", "ManageLogins") ]
-        </dd>*@
-                    @*
-        Номера телефонов можно использовать в качестве второго проверочного фактора для системы двухфакторной проверки подлинности.
+                    }
+                }
 
-         В <a href="https://go.microsoft.com/fwlink/?LinkId=403804">этой статье</a>
-            можно узнать, как настроить для этого приложения ASP.NET двухфакторную проверку подлинности с использованием SMS.
+                @if (Model.HasPassword)
+                {
+                    @Html.ActionLink("Change password", "ChangePassword", "Manage", new { id = 1 }, new { @class = "btn btn-outline-dark" })
+                }
+                else
+                {
+                    @Html.ActionLink("Создать", "SetPassword", "Manage", new { id = 1 }, new { @class = "btn btn-dark" })
+                }
 
-         Настроив двухфакторную проверку подлинности, раскомментируйте следующий блок
-                    *@
-                    @*
-        <dt>Номер телефона:</dt>
-        <dd>
-            @(Model.PhoneNumber ?? "None")
-            @if (Model.PhoneNumber != null)
-            {
-                <br />
-                <text>[&nbsp;&nbsp;@Html.ActionLink("Change", "AddPhoneNumber")&nbsp;&nbsp;]</text>
-                using (Html.BeginForm("RemovePhoneNumber", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                {
-                    @Html.AntiForgeryToken()
-                    <text>[<input type="submit" value="Удалить" class="btn-link" />]</text>
-                }
-            }
-            else
-            {
-                <text>[&nbsp;&nbsp;@Html.ActionLink("Add", "AddPhoneNumber")
-            }
-        </dd>
-                    *@
-                    @*<dt>Двухфакторная проверка подлинности:</dt>*@
-                    <dd>
-                        @*<p>
-                Поставщики двухфакторной проверки подлинности не настроены. В <a href="https://go.microsoft.com/fwlink/?LinkId=403804">этой статье</a>
-                можно узнать, как настроить двухфакторную проверку подлинности для этого приложения ASP.NET.
-            </p>*@
-                        @*@if (Model.TwoFactor)
-            {
-                using (Html.BeginForm("DisableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                {
-                    @Html.AntiForgeryToken()
-                    <text>Включено
-                    <input type="submit" value="Отключить" class="btn btn-link" />
-                    </text>
-                }
-            }
-            else
-            {
-                using (Html.BeginForm("EnableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                {
-                    @Html.AntiForgeryToken()
-                    <text>Отключено
-                    <input type="submit" value="Включить" class="btn btn-link" />
-                    </text>
-                }
-            }*@
-                    </dd>
-                    </dl>
-                    <p class="text-success">@ViewBag.StatusMessage</p>
-                </div>
+                <p class="text-success">@ViewBag.StatusMessage</p>
             </div>
         </div>
     </div>

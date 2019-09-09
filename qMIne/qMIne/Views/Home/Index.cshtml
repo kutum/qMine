@@ -48,4 +48,60 @@
     </div>
 </div>
 
+@Scripts.Render("~/bundles/rconJS")
 
+
+<script type="text/javascript">
+        $(function () {
+            $("#sendRcon").click(function () {
+
+                var command = $("#commandRcon").val();
+                if (command.length == 0) return;
+
+                if (command != "") { $("#Send").prop('disabled', true); };
+
+                $.ajax({
+                    url: '@Url.Action("CallRcon", "Home")',
+                    type: 'POST',
+                    data: { commandRcon: command },
+                    cache: false,
+
+                    success: function (Data) {
+
+                        var datetime = getCurrentTime();
+                        datetime += " -> ";
+                        datetime += command;
+
+                        $("#ulconsole").append('<li class="list-group-item list-group-item-success">' + datetime + '</li>');
+                        clearOldLogs();
+
+                        if (Data.indexOf("Unknown command") != -1) {
+                            logError(Data);
+                            clearOldLogs();
+                            return;
+                        }
+                        else if (Data.indexOf("Usage") != -1) {
+                            logWarning(Data);
+                            return;
+                        }
+                        else if (Data.indexOf("Exception") != -1) {
+                            logError(Data);
+                            return;
+                        }
+                        else if (Data.indexOf("Error") != -1) {
+                            logError(Data);
+                            return;
+                        }
+                        else
+                            logSuccess(Data);
+                    }
+                }).fail(
+                    function () {
+                        logError(Data);
+                        }
+                    );
+            });
+        });
+
+
+</script>

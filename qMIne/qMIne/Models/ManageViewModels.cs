@@ -12,6 +12,8 @@ namespace qMIne.Models
         public string PhoneNumber { get; set; }
         public bool TwoFactor { get; set; }
         public bool BrowserRemembered { get; set; }
+
+        //public virtual ServerCredentials ServerCredentials { get; set; }
     }
 
     public class ManageLoginsViewModel

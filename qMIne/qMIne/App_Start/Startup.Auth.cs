@@ -6,6 +6,7 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Owin;
 using qMIne.Models;
+using qMIne.Context;
 
 namespace qMIne
 {

@@ -4,15 +4,16 @@ namespace qMIne.Migrations
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
+    
 
-    internal sealed class Configuration : DbMigrationsConfiguration<qMIne.Models.ApplicationDbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<qMIne.Context.ApplicationDbContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(qMIne.Models.ApplicationDbContext context)
+        protected override void Seed(qMIne.Context.ApplicationDbContext context)
         {
             //  This method will be called after migrating to the latest version.
 

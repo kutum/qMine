@@ -14,7 +14,7 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 
-        <img src="~/Content/img/Computer-icon.png" style="padding-right:5px"/>
+        <img src="~/Content/img/Computer-icon.png" style="padding-right:5px" />
         <a class="navbar-brand" href="@Url.Action("Index", "Home")">qMine</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTop" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -40,76 +40,23 @@
         </div>
     </nav>
 
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+
+    @RenderSection("scripts", required: false)
 
     <div class="container body-content">
         @RenderBody()
-        @*<hr />*@
-        @*<footer>
+
+    </div>
+
+
+    @*<hr />*@
+    @*<footer>
             <div class="container-fluid">
                 <p>&copy; @DateTime.Now.Year – qMine ASP.NET</p>
             </div>
         </footer>*@
-    </div>
-
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/rconJS")
-    @RenderSection("scripts", required: false)
-
-    <script type="text/javascript">
-        $(function () {
-            $("#sendRcon").click(function () {
-
-                var command = $("#commandRcon").val();
-                if (command.length == 0) return;
-
-                if (command != "") { $("#Send").prop('disabled', true); };
-
-                $.ajax({
-                    url: '@Url.Action("CallRcon", "Home")',
-                    type: 'POST',
-                    data: { commandRcon: command },
-                    cache: false,
-
-                    success: function (Data) {
-
-                        var datetime = getCurrentTime();
-                        datetime += " -> ";
-                        datetime += command;
-
-                        $("#ulconsole").append('<li class="list-group-item list-group-item-success">' + datetime + '</li>');
-                        clearOldLogs();
-
-                        if (Data.indexOf("Unknown command") != -1) {
-                            logError(Data);
-                            clearOldLogs();
-                            return;
-                        }
-                        else if (Data.indexOf("Usage") != -1) {
-                            logWarning(Data);
-                            return;
-                        }
-                        else if (Data.indexOf("Exception") != -1) {
-                            logError(Data);
-                            return;
-                        }
-                        else if (Data.indexOf("Server") != -1) {
-                            logError(Data);
-                            return;
-                        }
-                        else
-                            logSuccess(Data);
-                    }
-                }).fail(
-                    function () {
-                        logError(Data);
-                        }
-                    );
-            });
-        });
-
-        
-    </script>
 
 </body>
 </html>

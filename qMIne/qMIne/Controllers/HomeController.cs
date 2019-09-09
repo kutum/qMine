@@ -1,4 +1,5 @@
 ﻿using MinecraftServerRCON;
+using qMIne.Context;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,16 +31,29 @@ namespace qMIne.Controllers
             {
                 using (var rcon = RCONClient.INSTANCE)
                 {
-                    rcon.setupStream("192.168.1.15", password: "myofrene");
-                    answer = rcon.sendMessage(RCONMessageType.Command, commandRcon);
 
-                    if(rcon.isInit == false)
+                    using (var context = new ApplicationDbContext())
                     {
-                        answer = "Server is offline";
-                    }
-                    else if(rcon.ErrorMsg.Length>0)
-                    {
-                        answer = rcon.ErrorMsg;
+                        var serverCredentials = context.ServerCredentials.FirstOrDefault(x => x.Name == User.Identity.Name);
+
+                        if(serverCredentials != null)
+                        {
+                            rcon.setupStream(serverCredentials.IP, password: serverCredentials.Password);
+                            answer = rcon.sendMessage(RCONMessageType.Command, commandRcon);
+
+                            if (rcon.isInit == false)
+                            {
+                                answer = "Error: Server is offline!";
+                            }
+                            else if (rcon.ErrorMsg.Length > 0)
+                            {
+                                answer = rcon.ErrorMsg;
+                            }
+                        }
+                        else
+                        {
+                            answer = "Error: Configure connection!";
+                        }
                     }
                 }
             }
