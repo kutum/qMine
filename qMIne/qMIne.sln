@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinecraftServerRCON", "..\.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "rconConsole", "rconConsole\rconConsole.csproj", "{4EE86C11-7A48-49C1-A0C8-D7CD6616509A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "qMineStat", "qMineStat\qMineStat.csproj", "{53570584-8BF0-4861-9526-3CA65ADA14B2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,6 +28,10 @@ Global
 		{4EE86C11-7A48-49C1-A0C8-D7CD6616509A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4EE86C11-7A48-49C1-A0C8-D7CD6616509A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4EE86C11-7A48-49C1-A0C8-D7CD6616509A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53570584-8BF0-4861-9526-3CA65ADA14B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53570584-8BF0-4861-9526-3CA65ADA14B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53570584-8BF0-4861-9526-3CA65ADA14B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53570584-8BF0-4861-9526-3CA65ADA14B2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

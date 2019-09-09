@@ -1,4 +1,5 @@
-﻿@{
+﻿@model qMIne.Models.StatusViewModel
+@{
     ViewBag.Title = "qMine Console";
 }
 
@@ -7,7 +8,7 @@
 
         <div class="card mb-3">
             <div class="card-header">
-                <h6 class="card-title">qMine rcon console</h6>
+                <h6 class="card-title">RCON Console</h6>
             </div>
             <div id="console" class="card-body">
                 <ul id="ulconsole" class="list-group" style="height: 300px; overflow: auto;"></ul>
@@ -36,20 +37,96 @@
         </div>
 
     </div>
+
+
     <div class="col">
         <div class="card">
             <div class="card-header">
-                <h6 class="card-title">Status</h6>
+
+
+                @if (Model.MineStat.ServerUp)
+                {
+                    <img class="d-inline" id="redstoneLamp" src="~/Content/img/lamp_online.png" />
+                    <h6 class="card-title d-inline" id="Online"> Online</h6>
+                }
+                else
+                {
+                    <img class="d-inline" src="~/Content/img/lamp_offline.png" />
+                    <h6 class="card-title d-inline" id="Online">Offline</h6>
+                }
+
             </div>
             <div class="card-body">
 
+                    <h5>@ViewData["Error"]</h5>
+                    <div class="input-group">
+                        @Html.LabelFor(x => x.MineStat.Address, new { @class = "input-group-text control-label font-weight-bold" })
+                        <span class="input-group-text" id="Address">@Model.MineStat.Address : @Model.MineStat.Port</span>
+                    </div>
+
+                    <div class="input-group">
+                        @Html.LabelFor(x => x.MineStat.Version, new { @class = "input-group-text control-label font-weight-bold" })
+                        <span class="input-group-text" id="Version" >@Model.MineStat.Version</span>
+                    </div>
+
+                    <div class="input-group">
+                        <span class="input-group-text control-label font-weight-bold">Players:</span>
+                        <span class="input-group-text" id="Players">@Model.MineStat.CurrentPlayers/@Model.MineStat.MaximumPlayers</span>
+                    </div>
+                    
             </div>
+            @*<div class="card-footer">
+                <input type="button" id="refreshStatus" class="btn btn-outline-dark float-xl-right" value="Refresh" />
+            </div>*@
         </div>
     </div>
 </div>
 
 @Scripts.Render("~/bundles/rconJS")
 
+<script type="text/javascript">
+
+    $("#refreshStatus").click(function () {
+        $.ajax({
+            url: '@Url.Action("GetStatus","Home")',
+            type: 'GET',
+            cache: false,
+            success: function (Data) {
+                refreshItems(Data);
+            }
+            });
+    });
+    function refreshItems(Data) {
+        document.getElementById('Address').childNodes[0].textContent = Data.Address + " : " + Data.Port;
+
+        if (Data.ServerUp == true) {
+            document.getElementById('Online').childNodes[0].textContent = "Online";
+            document.getElementById('redstoneLamp').src = "/Content/img/lamp_online.png";
+        }
+        else {
+            document.getElementById('Online').childNodes[0].textContent = "Offline";
+            document.getElementById('redstoneLamp').src = "/Content/img/lamp_offline.png";
+        }
+
+        document.getElementById('Version').childNodes[0].textContent = Data.Version;
+        document.getElementById('Players').childNodes[0].textContent = Data.CurrentPlayers + "/" + Data.MaximumPlayers;
+    }
+
+
+
+    function refreshStatus() {
+         $.ajax({
+            url: '@Url.Action("GetStatus","Home")',
+            type: 'GET',
+            cache: false,
+            success: function (Data) {
+                refreshItems(Data);
+            }
+            });
+    }
+
+    setInterval(refreshStatus, 5000);
+</script>
 
 <script type="text/javascript">
         $(function () {
@@ -102,6 +179,4 @@
                     );
             });
         });
-
-
 </script>

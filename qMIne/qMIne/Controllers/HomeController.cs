@@ -1,5 +1,7 @@
 ﻿using MinecraftServerRCON;
 using qMIne.Context;
+using qMIne.Models;
+using qMineStat;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,12 +16,30 @@ namespace qMIne.Controllers
         {
             if (Request.IsAuthenticated)
             {
-                return View();
+                try
+                {
+                    var serverCredentials = GetServerCredentials(User.Identity.Name);
+
+                    return View(new StatusViewModel( new MineStat(serverCredentials.IP, (ushort)serverCredentials.Port)));
+                }
+                catch (Exception ex)
+                {
+                    ViewData["Error"] = "Error: " + ex.Message;
+
+                    return Redirect("Account/Login");
+                }
+
             }
             else
             {
-              return  Redirect("Account/Login");
+                return Redirect("Account/Login");
             }
+        }
+
+        public JsonResult GetStatus()
+        {
+            var serverCredentials = GetServerCredentials(User.Identity.Name);
+            return Json(new MineStat(serverCredentials.IP, (ushort)serverCredentials.Port), JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -31,15 +51,12 @@ namespace qMIne.Controllers
             {
                 using (var rcon = RCONClient.INSTANCE)
                 {
+                        var serverCredentials = GetServerCredentials(User.Identity.Name);
 
-                    using (var context = new ApplicationDbContext())
-                    {
-                        var serverCredentials = context.ServerCredentials.FirstOrDefault(x => x.Name == User.Identity.Name);
-
-                        if(serverCredentials != null)
+                        if (serverCredentials != null)
                         {
-                            rcon.setupStream(serverCredentials.IP, password: serverCredentials.Password);
-                            answer = rcon.sendMessage(RCONMessageType.Command, commandRcon);
+                            rcon.setupStream(serverCredentials.IP, serverCredentials.RconPort, password: serverCredentials.Password);
+                            answer = rcon.sendMessage(RCONMessageType.Command, commandRcon).RemoveColorCodes();
 
                             if (rcon.isInit == false)
                             {
@@ -54,7 +71,7 @@ namespace qMIne.Controllers
                         {
                             answer = "Error: Configure connection!";
                         }
-                    }
+                    
                 }
             }
             catch (Exception ex)
@@ -73,6 +90,14 @@ namespace qMIne.Controllers
         public ActionResult Contact()
         {
             return View();
+        }
+
+        public ServerCredentials GetServerCredentials(string UserName)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                return context.ServerCredentials.FirstOrDefault(x => x.Name == UserName);
+            }
         }
     }
 }

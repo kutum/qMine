@@ -11,11 +11,12 @@ namespace qMIne.Models
     {
         public ServerCredentials() { }
 
-        public ServerCredentials(string _Name, string _IP = "127.0.0.1", int _Port = 25575, string _Password = "")
+        public ServerCredentials(string _Name, string _IP = "127.0.0.1", int _Port = 25565, int _RconPort = 25575, string _Password = "")
         {
             Name = _Name;
             IP = _IP;
             Port = _Port;
+            RconPort = _RconPort;
             Password = _Password;
         }
         /// <summary>
@@ -38,6 +39,11 @@ namespace qMIne.Models
         /// </summary>
         [Display(Name = "Server port")]
         public int Port { get; set; }
+        /// <summary>
+        /// RCON Port
+        /// </summary>
+        [Display(Name = "Rcon port")]
+        public int RconPort { get; set; }
         /// <summary>
         /// Password
         /// </summary>
