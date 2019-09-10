@@ -1,6 +1,6 @@
 ﻿using MinecraftServerRCON;
-using qMIne.Context;
-using qMIne.Models;
+using qMine.Context;
+using qMine.Models;
 using qMineStat;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace qMIne.Controllers
+namespace qMine.Controllers
 {
     public class HomeController : Controller
     {

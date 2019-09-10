@@ -1,4 +1,4 @@
-namespace qMIne.Migrations
+namespace qMine.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;

@@ -1,8 +1,8 @@
 ﻿using Microsoft.Owin;
 using Owin;
 
-[assembly: OwinStartup(typeof(qMIne.Startup))]
-namespace qMIne
+[assembly: OwinStartup(typeof(qMine.Startup))]
+namespace qMine
 {
     public partial class Startup
     {

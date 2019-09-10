@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace qMIne.Models
+namespace qMine.Models
 {
     /// <summary>
     /// Данные Minecraft сервера для rcon подключения

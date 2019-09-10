@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNet.Identity.EntityFramework;
-using qMIne.Models;
+using qMine.Models;
 using System.Data.Entity;
 
-namespace qMIne.Context
+namespace qMine.Context
 {
     [DbConfigurationType(typeof(MySql.Data.EntityFramework.MySqlEFConfiguration))]
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>

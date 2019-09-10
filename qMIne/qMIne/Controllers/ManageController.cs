@@ -8,10 +8,10 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using qMIne.Context;
-using qMIne.Models;
+using qMine.Context;
+using qMine.Models;
 
-namespace qMIne.Controllers
+namespace qMine.Controllers
 {
     [Authorize]
     public class ManageController : Controller

@@ -1,6 +1,6 @@
 ﻿using qMineStat;
 
-namespace qMIne.Models
+namespace qMine.Models
 {
     public class StatusViewModel
     {

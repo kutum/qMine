@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace qMIne.Models
+namespace qMine.Models
 {
     public class ExternalLoginConfirmationViewModel
     {

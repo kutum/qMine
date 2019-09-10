@@ -5,10 +5,10 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Owin;
-using qMIne.Models;
-using qMIne.Context;
+using qMine.Models;
+using qMine.Context;
 
-namespace qMIne
+namespace qMine
 {
     public partial class Startup
     {
