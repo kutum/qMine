@@ -143,6 +143,7 @@
             document.getElementById('Players').childNodes[0].textContent = Data.CurrentPlayers + "/" + Data.MaximumPlayers;
             $("#spbtnStartStop").hasClass('fas fa-stop');
             document.getElementById('btnStartStop').childNodes[1].textContent = "Stop";
+            $("#Send").prop('disabled', false);
         }
         else {
             document.getElementById('Online').childNodes[0].textContent = "Offline";
@@ -151,6 +152,7 @@
             document.getElementById('Players').childNodes[0].textContent = "-/-";
             $("#spbtnStartStop").hasClass('fas fa-play');
             document.getElementById('btnStartStop').childNodes[1].textContent = "Start";
+            $("#Send").prop('disabled', true);
         }
         
        
@@ -203,16 +205,15 @@
                     if (Data.indexOf("SSH Error") != -1) {
                         alert("Empty SSH command. Configure it in Account");
 
-                        $("#spbtnStartStop").addClass('fa-stop');
                         $("#spbtnStartStop").removeClass('fa-circle-notch');
                         $("#spbtnStartStop").removeClass('fa-spin');
+                        $("#spbtnStartStop").addClass('fa-stop');
                     }
                     else {
-
-                        $("#spbtnStartStop").addClass('fa-play');
                         $("#spbtnStartStop").removeClass('fa-circle-notch');
                         $("#spbtnStartStop").removeClass('fa-spin');
-                        document.getElementById('btnStartStop').childNodes[1].textContent = "Stop";
+                        $("#spbtnStartStop").addClass('fa-play');
+                        document.getElementById('btnStartStop').childNodes[1].textContent = "Start";
                     }
 
                     getStatus();
@@ -234,17 +235,17 @@
 
                     if (Data.indexOf("SSH Error") != -1) {
 
-                        $("#spbtnStartStop").addClass('fa-play');
                         $("#spbtnStartStop").removeClass('fa-circle-notch');
                         $("#spbtnStartStop").removeClass('fa-spin');
+                        $("#spbtnStartStop").addClass('fa-play');
                     }
                     else {
-
-                        $("#spbtnStartStop").addClass('fa-stop');
+                        
                         $("#spbtnStartStop").removeClass('fa-circle-notch');
                         $("#spbtnStartStop").removeClass('fa-spin');
+                        $("#spbtnStartStop").addClass('fa-stop');
 
-                        document.getElementById('btnStartStop').childNodes[1].textContent = "Start";
+                        document.getElementById('btnStartStop').childNodes[1].textContent = "Stop";
                     }
 
                     getStatus();
@@ -271,9 +272,13 @@
     function sendRcon() {
         var command = $("#commandRcon").val();
 
-        document.getElementById('commandRcon').value = '';
         
-                if (command.length == 0) return;
+
+        if (@Model.MineStat.ServerUp == 'false') return;
+        if (command.length == 0) return;
+        
+        
+        document.getElementById('commandRcon').value = '';   
 
         if (command != "") {
             $("#Send").prop('disabled', true);
