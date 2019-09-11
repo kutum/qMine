@@ -6,12 +6,14 @@
 <div class="row content container-fluid" style="padding-top:10px">
     <div class="col-lg-8 console">
 
-        <div class="card mb-3">
+        <div class="card mb-3" >
             <div class="card-header">
-                <h6 class="card-title">RCON Console</h6>
+                @*<img src="~/Content/img/commandblock.png" class="d-inline" />*@
+                <img src="~/Content/img/Computer-icon.png" />
+                <h6 class="card-title d-inline" style="padding-left:10px">RCON Console</h6>
             </div>
             <div id="console" class="card-body">
-                <ul id="ulconsole" class="list-group" style="height: 300px; overflow: auto;"></ul>
+                <ul id="ulconsole" class="list-group" style="font-size:9pt; height:375px; overflow: auto;"></ul>
             </div>
         </div>
 
@@ -24,57 +26,93 @@
 
             <input type="text" id="commandRcon" class="form-control" />
             <div class="input-group-btn">
-                <button type="button" class="btn btn-outline-dark" tabindex="-1" id="sendRcon"><span class="fas fa-arrow-right"></span> Send</button>
+                @if (Model.MineStat.ServerUp)
+                {
+                    <button type="button" class="btn btn-dark" tabindex="-1" id="sendRcon"><span id="sendStatus" class="fas fa-arrow-right"></span> Send</button>
+                }
+                else
+                {
+                    <button type="button" class="btn btn-dark" disabled tabindex="-1" id="sendRcon"><span id="sendStatus" class="fas fa-arrow-right"></span> Send</button>
+                }
             </div>
         </div>
 
         <div class="checkbox card mb-3" style="display:inline-block; width:100%">
 
             <label style="padding-top: 1%;padding-left:10px">
-                <input type="checkbox" id="chkAutoScroll" checked="checked"> Auto scroll
+                <span class="list-group-item-light">
+                    <input type="checkbox" id="chkAutoScroll" checked="checked"> Auto scroll
+                </span>
             </label>
+
+            
             <button type="button" class="btn btn-outline-dark" tabindex="0" id="btnClearLog" style="float:right;"><span class="far fa-trash-alt"></span> Clear</button>
+            
         </div>
 
     </div>
 
 
     <div class="col">
-        <div class="card">
-            <div class="card-header">
+        <div class="row">
+            <div class="card" style="min-width:300px; min-height:200px">
+                <div class="card-header">
 
 
-                @if (Model.MineStat.ServerUp)
-                {
-                    <img class="d-inline" id="redstoneLamp" src="~/Content/img/lamp_online.png" />
-                    <h6 class="card-title d-inline" id="Online"> Online</h6>
-                }
-                else
-                {
-                    <img class="d-inline" src="~/Content/img/lamp_offline.png" />
-                    <h6 class="card-title d-inline" id="Online">Offline</h6>
-                }
-                <button id="refreshStatus" class="btn btn-outline-dark float-xl-right d-inline"><span class=" fas fa-sync"></span></button>
+                    @if (Model.MineStat.ServerUp)
+                    {
+                        <img class="d-inline" id="redstoneLamp" src="~/Content/img/lamp_online.png" />
+                        <h6 class="card-title d-inline" id="Online"> Online</h6>
+                    }
+                    else
+                    {
+                        <img class="d-inline" src="~/Content/img/lamp_offline.png" />
+                        <h6 class="card-title d-inline" id="Online">Offline</h6>
+                    }
+                    @*<button id="refreshStatus" class="btn btn-outline-dark float-xl-right d-inline"><span class=" fas fa-sync"></span></button>*@
 
-            </div>
-            <div class="card-body">
+                </div>
+                <div class="card-body">
 
                     <h5>@ViewData["Error"]</h5>
-                    <div class="input-group">
+
+                    <div class="input-group mb-1">
                         @Html.LabelFor(x => x.MineStat.Address, new { @class = "input-group-text control-label font-weight-bold" })
                         <span class="input-group-text" id="Address">@Model.MineStat.Address : @Model.MineStat.Port</span>
                     </div>
 
-                    <div class="input-group">
-                        @Html.LabelFor(x => x.MineStat.Version, new { @class = "input-group-text control-label font-weight-bold" })
-                        <span class="input-group-text" id="Version" >@Model.MineStat.Version</span>
-                    </div>
+                    @if (Model.MineStat.ServerUp)
+                    {
 
-                    <div class="input-group">
-                        <span class="input-group-text control-label font-weight-bold">Players:</span>
-                        <span class="input-group-text" id="Players">@Model.MineStat.CurrentPlayers/@Model.MineStat.MaximumPlayers</span>
-                    </div>
-                    
+                        <div class="input-group mb-1">
+                            @Html.LabelFor(x => x.MineStat.Version, new { @class = "input-group-text control-label font-weight-bold" })
+                            <span class="input-group-text" id="Version">@Model.MineStat.Version</span>
+                        </div>
+
+                        <div class="input-group">
+                            <span class="input-group-text control-label font-weight-bold">Players:</span>
+                            <span class="input-group-text" id="Players">@Model.MineStat.CurrentPlayers/@Model.MineStat.MaximumPlayers</span>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row" style="padding-top:15px; ">
+            <div class="card" style="min-width:300px; min-height:200px">
+                <div class="card-header">
+                    <img src="~/Content/img/Enchanting_Table.png" class="d-inline" />
+                    <h6 class="card-title d-inline" style="padding-left:10px">Info</h6>
+                </div>
+                <div class="card-body" style="font-size:10pt">
+                     <a href="http://minecraft.gamepedia.com/Commands" class="list-group-item list-group-item-action list-group-item-info mb-3">
+                        <img src="~/Content/img/Enchanted_Book.gif" style="max-height:32px; padding-right:10px" />  Commands
+                     </a>
+                     <a href="http://www.minecraftinfo.com/idlist.htm" class="list-group-item list-group-item-action list-group-item-info">
+                        <img src="~/Content/img/Enchanted_Book.gif" style="max-height:32px; padding-right:10px" /> Items ID
+                     </a>
+                </div>
             </div>
         </div>
     </div>
@@ -116,7 +154,7 @@
         document.getElementById('Players').childNodes[0].textContent = Data.CurrentPlayers + "/" + Data.MaximumPlayers;
     }
 
-   @* function refreshStatus() {
+    function refreshStatus() {
          $.ajax({
             url: '@Url.Action("GetStatus","Home")',
             type: 'GET',
@@ -125,9 +163,9 @@
                 refreshItems(Data);
             }
             });
-    }*@
+    }
 
-    //setInterval(refreshStatus, 5000);
+    setInterval(refreshStatus, 10000);
 </script>
 
 <script type="text/javascript">
@@ -141,14 +179,25 @@
             sendRcon();
             document.getElementById('commandRcon').value = '';
         }
-        //debugger;
     });
 
     function sendRcon() {
         var command = $("#commandRcon").val();
+
+        document.getElementById('commandRcon').value = '';
+        
                 if (command.length == 0) return;
 
-                if (command != "") { $("#Send").prop('disabled', true); };
+        if (command != "") {
+            $("#Send").prop('disabled', true);
+
+            //$("#commandRcon").prop('disabled', true);
+
+            $("#sendStatus").removeClass('fa-arrow-right');
+            $("#sendStatus").addClass('fa-circle-notch');
+            $("#sendStatus").addClass('fa-spin');
+            
+        };
 
                 $.ajax({
                     url: '@Url.Action("CallRcon", "Home")',
@@ -164,6 +213,12 @@
 
                         $("#ulconsole").append('<li class="list-group-item list-group-item-success">' + datetime + '</li>');
                         clearOldLogs();
+
+                        $("#sendStatus").addClass('fa-arrow-right');
+                        $("#sendStatus").removeClass('fa-circle-notch');
+                        $("#sendStatus").removeClass('fa-spin');
+
+                        //$("#commandRcon").prop('disabled', false);
 
                         if (Data.indexOf("Unknown command") != -1) {
                             logError(Data);
@@ -188,6 +243,12 @@
                 }).fail(
                     function () {
                         logError(Data);
+
+                        //$("#commandRcon").prop('disabled', false);
+
+                        $("#sendStatus").addClass('fa-arrow-right');
+                        $("#sendStatus").removeClass('fa-circle-notch');
+                        $("#sendStatus").removeClass('fa-spin');
                         }
                     );
     }

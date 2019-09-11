@@ -7,7 +7,7 @@ function logSuccess(Data) {
     datetime = getCurrentTime();
     datetime += " <- ";
     var fullLog = datetime + Data;
-    $("#ulconsole").append('<li class="list-group-item list-group-item-info" >' + fullLog + '</li>');
+    $("#ulconsole").append('<li class="list-group-item list-group-item-info " >' + fullLog + '</li>');
     $("#btnSend").prop('disabled', false);
     clearOldLogs();
     if ($("#chkAutoScroll").is(':checked')) scrollLogsDown();

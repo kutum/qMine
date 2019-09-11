@@ -16,7 +16,7 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 
-        <img src="~/Content/img/Computer-icon.png" style="padding-right:5px" />
+        @*<img src="~/Content/img/Computer-icon.png" style="padding-right:5px" />*@
         <a class="navbar-brand" href="@Url.Action("Index", "Home")">qMine</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTop" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -27,7 +27,7 @@
                 @if (Request.IsAuthenticated)
                 {
                     <li class="nav-item active">
-                        <a class="nav-link" href="@Url.Action("Index", "Home")">Home <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="@Url.Action("Index", "Home")">Console <span class="sr-only">(current)</span></a>
                     </li>
 
                     @*<li class="nav-item active">
