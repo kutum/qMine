@@ -14,13 +14,13 @@ namespace qMine.Controllers
 {
     public class HomeController : Controller
     {
-        public async Task<ActionResult> Index()
+        public  ActionResult Index()
         {
             if (Request.IsAuthenticated)
             {
                 try
                 {
-                    var serverCredentials = await GetServerCredentials(User.Identity.Name);
+                    var serverCredentials = GetServerCredentials(User.Identity.Name);
                     var mineStat = new MineStat(serverCredentials.IP, (ushort)serverCredentials.Port);
                     var statusViewModel = new StatusViewModel(mineStat);
                     return View(statusViewModel);
@@ -39,16 +39,24 @@ namespace qMine.Controllers
             }
         }
 
-        public async Task<JsonResult> GetStatus()
+        public async Task<JsonResult> GetStatusAsync()
         {
-            var serverCredentials = await GetServerCredentials(User.Identity.Name);
+            var serverCredentials =  await GetServerCredentialsAsync(User.Identity.Name);
+            var mineStat = new MineStat(serverCredentials.IP, (ushort)serverCredentials.Port);
+
+            return Json(mineStat, JsonRequestBehavior.AllowGet);
+        }
+
+        public  JsonResult GetStatus()
+        {
+            var serverCredentials = GetServerCredentials(User.Identity.Name);
             var mineStat = new MineStat(serverCredentials.IP, (ushort)serverCredentials.Port);
 
             return Json(mineStat, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
-        public async Task<string> CallRcon(string commandRcon)
+        public async Task<string> CallRconAsync(string commandRcon)
         {
             var answer = "";
 
@@ -56,7 +64,7 @@ namespace qMine.Controllers
             {
                 using (var rcon = RCONClient.INSTANCE)
                 {
-                        var serverCredentials =  await GetServerCredentials(User.Identity.Name);
+                        var serverCredentials =  await GetServerCredentialsAsync(User.Identity.Name);
 
                         if (serverCredentials != null)
                         {
@@ -87,6 +95,45 @@ namespace qMine.Controllers
             return answer;
         }
 
+        public string CallRcon(string commandRcon)
+        {
+            var answer = "";
+
+            try
+            {
+                using (var rcon = RCONClient.INSTANCE)
+                {
+                    var serverCredentials = GetServerCredentials(User.Identity.Name);
+
+                    if (serverCredentials != null)
+                    {
+                        rcon.setupStream(serverCredentials.IP, serverCredentials.RconPort, password: serverCredentials.Password);
+                        answer = rcon.sendMessage(RCONMessageType.Command, commandRcon).RemoveColorCodes();
+
+                        if (rcon.isInit == false)
+                        {
+                            answer = "Error: Server is offline!";
+                        }
+                        else if (rcon.ErrorMsg.Length > 0)
+                        {
+                            answer = rcon.ErrorMsg;
+                        }
+                    }
+                    else
+                    {
+                        answer = "Error: Configure connection!";
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                answer = ex.Message;
+            }
+
+            return answer;
+        }
+
         public ActionResult About()
         {
             return View();
@@ -97,11 +144,19 @@ namespace qMine.Controllers
             return View();
         }
 
-        public async Task<ServerCredentials> GetServerCredentials(string UserName)
+        public async Task<ServerCredentials> GetServerCredentialsAsync(string UserName)
         {
             using (var context = new ApplicationDbContext())
             {
                 return await context.ServerCredentials.Where(x => x.Name == UserName).FirstOrDefaultAsync();
+            }
+        }
+
+        public ServerCredentials GetServerCredentials(string UserName)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                return context.ServerCredentials.FirstOrDefault(x => x.Name == UserName);
             }
         }
     }
