@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.28307.705
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "qMine", "qMIne\qMine.csproj", "{478695C6-52B4-49EF-92CD-1707F1F037E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "rconConsole", "rconConsole\rconConsole.csproj", "{4EE86C11-7A48-49C1-A0C8-D7CD6616509A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "testConsole", "rconConsole\testConsole.csproj", "{4EE86C11-7A48-49C1-A0C8-D7CD6616509A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "qMineStat", "qMineStat\qMineStat.csproj", "{53570584-8BF0-4861-9526-3CA65ADA14B2}"
 EndProject

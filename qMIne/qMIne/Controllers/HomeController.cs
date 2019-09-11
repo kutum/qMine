@@ -2,6 +2,7 @@
 using qMine.Context;
 using qMine.Models;
 using qMineStat;
+using Renci.SshNet;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -39,60 +40,12 @@ namespace qMine.Controllers
             }
         }
 
-        public async Task<JsonResult> GetStatusAsync()
-        {
-            var serverCredentials =  await GetServerCredentialsAsync(User.Identity.Name);
-            var mineStat = new MineStat(serverCredentials.IP, (ushort)serverCredentials.Port);
-
-            return Json(mineStat, JsonRequestBehavior.AllowGet);
-        }
-
         public  JsonResult GetStatus()
         {
             var serverCredentials = GetServerCredentials(User.Identity.Name);
             var mineStat = new MineStat(serverCredentials.IP, (ushort)serverCredentials.Port);
 
             return Json(mineStat, JsonRequestBehavior.AllowGet);
-        }
-
-        [HttpPost]
-        public async Task<string> CallRconAsync(string commandRcon)
-        {
-            var answer = "";
-
-            try
-            {
-                using (var rcon = RCONClient.INSTANCE)
-                {
-                        var serverCredentials =  await GetServerCredentialsAsync(User.Identity.Name);
-
-                        if (serverCredentials != null)
-                        {
-                            rcon.setupStream(serverCredentials.IP, serverCredentials.RconPort, password: serverCredentials.Password);
-                            answer = rcon.sendMessage(RCONMessageType.Command, commandRcon).RemoveColorCodes();
-
-                            if (rcon.isInit == false)
-                            {
-                                answer = "Error: Server is offline!";
-                            }
-                            else if (rcon.ErrorMsg.Length > 0)
-                            {
-                                answer = rcon.ErrorMsg;
-                            }
-                        }
-                        else
-                        {
-                            answer = "Error: Configure connection!";
-                        }
-                    
-                }
-            }
-            catch (Exception ex)
-            {
-                answer = ex.Message;
-            }
-
-            return answer;
         }
 
         public string CallRcon(string commandRcon)
@@ -144,6 +97,78 @@ namespace qMine.Controllers
             return View();
         }
 
+        public ServerCredentials GetServerCredentials(string UserName)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                return context.ServerCredentials.FirstOrDefault(x => x.Name == UserName);
+            }
+        }
+
+        public string Start()
+        {
+            var serverCredentials = GetServerCredentials(User.Identity.Name);
+
+            return SSHSend(serverCredentials.SSHStartServer);
+        }
+
+        public string Stop()
+        {
+            var serverCredentials = GetServerCredentials(User.Identity.Name);
+
+            return SSHSend(serverCredentials.SSHStopServer);
+        }
+
+        public string SSHSend(string Command)
+        {
+            if(Command == null)
+            {
+                return "SSH Error: Empty command";
+            }
+
+            var serverCredentials = GetServerCredentials(User.Identity.Name);
+
+            ConnectionInfo ConnNfo = 
+                new ConnectionInfo(serverCredentials.IP, serverCredentials.SSHPort, serverCredentials.SSHLogin,
+                    new AuthenticationMethod[]{
+                        new PasswordAuthenticationMethod(serverCredentials.SSHLogin,serverCredentials.SSHPassword)
+                    }
+             );
+
+            try
+            {
+                using (var sshclient = new SshClient(ConnNfo))
+                {
+                    var response = "";
+
+                    sshclient.Connect();
+                    using (var cmd = sshclient.CreateCommand(Command))
+                    {
+                        cmd.Execute();
+                        response = cmd.Result;
+                    }
+                    sshclient.Disconnect();
+
+                    return response;
+                }
+            }
+            catch (Exception e)
+            {
+                return "SSH Error: " + e.Message;
+            }
+
+
+        }
+
+        #region Async
+        public async Task<JsonResult> GetStatusAsync()
+        {
+            var serverCredentials = await GetServerCredentialsAsync(User.Identity.Name);
+            var mineStat = new MineStat(serverCredentials.IP, (ushort)serverCredentials.Port);
+
+            return Json(mineStat, JsonRequestBehavior.AllowGet);
+        }
+
         public async Task<ServerCredentials> GetServerCredentialsAsync(string UserName)
         {
             using (var context = new ApplicationDbContext())
@@ -152,12 +177,45 @@ namespace qMine.Controllers
             }
         }
 
-        public ServerCredentials GetServerCredentials(string UserName)
+        [HttpPost]
+        public async Task<string> CallRconAsync(string commandRcon)
         {
-            using (var context = new ApplicationDbContext())
+            var answer = "";
+
+            try
             {
-                return context.ServerCredentials.FirstOrDefault(x => x.Name == UserName);
+                using (var rcon = RCONClient.INSTANCE)
+                {
+                    var serverCredentials = await GetServerCredentialsAsync(User.Identity.Name);
+
+                    if (serverCredentials != null)
+                    {
+                        rcon.setupStream(serverCredentials.IP, serverCredentials.RconPort, password: serverCredentials.Password);
+                        answer = rcon.sendMessage(RCONMessageType.Command, commandRcon).RemoveColorCodes();
+
+                        if (rcon.isInit == false)
+                        {
+                            answer = "Error: Server is offline!";
+                        }
+                        else if (rcon.ErrorMsg.Length > 0)
+                        {
+                            answer = rcon.ErrorMsg;
+                        }
+                    }
+                    else
+                    {
+                        answer = "Error: Configure connection!";
+                    }
+
+                }
             }
+            catch (Exception ex)
+            {
+                answer = ex.Message;
+            }
+
+            return answer;
         }
+        #endregion
     }
 }

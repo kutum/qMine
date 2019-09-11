@@ -11,13 +11,28 @@ namespace qMine.Models
     {
         public ServerCredentials() { }
 
-        public ServerCredentials(string _Name, string _IP = "127.0.0.1", int _Port = 25565, int _RconPort = 25575, string _Password = "")
+        public ServerCredentials(
+                                string _Name, 
+                                string _IP = "127.0.0.1", 
+                                int _Port = 25565, 
+                                int _RconPort = 25575, 
+                                string _Password = "", 
+                                string _SSHLogin = "", 
+                                string _SSHPassword = "", 
+                                int _SSHPort = 22, 
+                                string _SSHStartServer = "", 
+                                string _SSHStopServer = "")
         {
             Name = _Name;
             IP = _IP;
             Port = _Port;
             RconPort = _RconPort;
             Password = _Password;
+            SSHLogin = _SSHLogin;
+            SSHPassword = _SSHPassword;
+            SSHPort = _SSHPort;
+            SSHStartServer = _SSHStartServer;
+            SSHStopServer = _SSHStopServer;
         }
         /// <summary>
         /// Ключ
@@ -49,5 +64,30 @@ namespace qMine.Models
         /// </summary>
         [Display(Name = "Server Password")]
         public string Password { get; set; }
+        /// <summary>
+        /// Ssh Username
+        /// </summary>
+        [Display(Name = "SSH Username")]
+        public string SSHLogin { get; set; }
+        /// <summary>
+        /// Ssh Password
+        /// </summary>
+        [Display(Name = "SSH Password")]
+        public string SSHPassword { get; set; }
+        /// <summary>
+        /// Ssh Port
+        /// </summary>
+        [Display (Name = "SSH Port")]
+        public int SSHPort { get; set; }
+        /// <summary>
+        /// Ssh Start Server
+        /// </summary>
+        [Display(Name = "SSH Start Minecraft Server")]
+        public string SSHStartServer { get; set; }
+        /// <summary>
+        /// Ssh Start Server
+        /// </summary>
+        [Display(Name = "SSH Stop Minecraft Server")]
+        public string SSHStopServer { get; set; }
     }
 }

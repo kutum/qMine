@@ -10,5 +10,6 @@ namespace qMine.Models
         }
 
         public MineStat MineStat { get; set; }
+
     }
 }

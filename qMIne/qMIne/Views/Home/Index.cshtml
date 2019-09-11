@@ -13,7 +13,7 @@
                 <h6 class="card-title d-inline" style="padding-left:10px">RCON Console</h6>
             </div>
             <div id="console" class="card-body">
-                <ul id="ulconsole" class="list-group" style="font-size:9pt; height:375px; overflow: auto;"></ul>
+                <ul id="ulconsole" class="list-group" style="font-size:9pt; height:377px; overflow: auto;"></ul>
             </div>
         </div>
 
@@ -32,7 +32,7 @@
                 }
                 else
                 {
-                    <button type="button" class="btn btn-dark" disabled tabindex="-1" id="sendRcon"><span id="sendStatus" class="fas fa-arrow-right"></span> Send</button>
+                    <button type="button" class="btn btn-default" disabled tabindex="-1" id="sendRcon"><span id="sendStatus" class="fas fa-arrow-right"></span> Send</button>
                 }
             </div>
         </div>
@@ -59,41 +59,37 @@
                 <div class="card-header">
 
 
-                    @if (Model.MineStat.ServerUp)
-                    {
-                        <img class="d-inline" id="redstoneLamp" src="~/Content/img/lamp_online.png" />
-                        <h6 class="card-title d-inline" id="Online"> Online</h6>
-                    }
-                    else
-                    {
-                        <img class="d-inline" src="~/Content/img/lamp_offline.png" />
-                        <h6 class="card-title d-inline" id="Online">Offline</h6>
-                    }
+                   
+                        <img class="d-inline"  id="redstoneLamp" src="~/Content/img/lamp_offline.png" />
+                        <h6 class="card-title d-inline" id="Online">Getting status...</h6>
+                    
                     @*<button id="refreshStatus" class="btn btn-outline-dark float-xl-right d-inline"><span class=" fas fa-sync"></span></button>*@
+
+                    <button class="btn btn-sm" tabindex="0" id="btnStartStop" style="float:right;"><span id="spbtnStartStop" style="margin-right:10px" class="fas"></span>...</button>
 
                 </div>
                 <div class="card-body">
 
                     <h5>@ViewData["Error"]</h5>
 
+                    @*<div id="alertmessage"></div>*@
+
                     <div class="input-group mb-1">
                         @Html.LabelFor(x => x.MineStat.Address, new { @class = "input-group-text control-label font-weight-bold" })
                         <span class="input-group-text" id="Address">@Model.MineStat.Address : @Model.MineStat.Port</span>
                     </div>
 
-                    @if (Model.MineStat.ServerUp)
-                    {
+
 
                         <div class="input-group mb-1">
                             @Html.LabelFor(x => x.MineStat.Version, new { @class = "input-group-text control-label font-weight-bold" })
-                            <span class="input-group-text" id="Version">@Model.MineStat.Version</span>
+                            <span class="input-group-text" id="Version">- @Model.MineStat.Version</span>
                         </div>
 
                         <div class="input-group">
                             <span class="input-group-text control-label font-weight-bold">Players:</span>
                             <span class="input-group-text" id="Players">@Model.MineStat.CurrentPlayers/@Model.MineStat.MaximumPlayers</span>
                         </div>
-                    }
 
                 </div>
             </div>
@@ -133,7 +129,6 @@
             });
     }
 
-
     $("#refreshStatus").click(function () {
         getStatus();
     });
@@ -144,14 +139,21 @@
         if (Data.ServerUp == true) {
             document.getElementById('Online').childNodes[0].textContent = "Online";
             document.getElementById('redstoneLamp').src = '@Url.Content("~/Content/img/lamp_online.png")';
+            document.getElementById('Version').childNodes[0].textContent = Data.Version;
+            document.getElementById('Players').childNodes[0].textContent = Data.CurrentPlayers + "/" + Data.MaximumPlayers;
+            $("#spbtnStartStop").hasClass('fas fa-stop');
+            document.getElementById('btnStartStop').childNodes[1].textContent = "Stop";
         }
         else {
             document.getElementById('Online').childNodes[0].textContent = "Offline";
             document.getElementById('redstoneLamp').src = '@Url.Content("~/Content/img/lamp_offline.png")';
+            document.getElementById('Version').childNodes[0].textContent = "-";
+            document.getElementById('Players').childNodes[0].textContent = "-/-";
+            $("#spbtnStartStop").hasClass('fas fa-play');
+            document.getElementById('btnStartStop').childNodes[1].textContent = "Start";
         }
-
-        document.getElementById('Version').childNodes[0].textContent = Data.Version;
-        document.getElementById('Players').childNodes[0].textContent = Data.CurrentPlayers + "/" + Data.MaximumPlayers;
+        
+       
     }
 
     function refreshStatus() {
@@ -165,7 +167,92 @@
             });
     }
 
-    setInterval(refreshStatus, 10000);
+    setInterval(refreshStatus, 5000);
+</script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        getStatus();
+
+        if ('@Model.MineStat.ServerUp' == 'True') {
+
+            $("#spbtnStartStop").addClass('fas fa-stop');
+        }
+        else {
+            $("#spbtnStartStop").addClass('fas fa-play');
+        }
+    });
+
+
+    $("#btnStartStop").click(function () {
+
+        if ('@Model.MineStat.ServerUp' == 'True') {
+
+            $("#spbtnStartStop").removeClass('fa-stop');
+            $("#spbtnStartStop").addClass('fa-circle-notch');
+            $("#spbtnStartStop").addClass('fa-spin');
+
+            $.ajax({
+            url: '@Url.Action("Stop", "Home")',
+            type: 'POST',
+            cache: false,
+                success: function (Data) {
+
+                    if (Data.indexOf("SSH Error") != -1) {
+                        alert("Empty SSH command. Configure it in Account");
+
+                        $("#spbtnStartStop").addClass('fa-stop');
+                        $("#spbtnStartStop").removeClass('fa-circle-notch');
+                        $("#spbtnStartStop").removeClass('fa-spin');
+                    }
+                    else {
+
+                        $("#spbtnStartStop").addClass('fa-play');
+                        $("#spbtnStartStop").removeClass('fa-circle-notch');
+                        $("#spbtnStartStop").removeClass('fa-spin');
+                        document.getElementById('btnStartStop').childNodes[1].textContent = "Stop";
+                    }
+
+                    getStatus();
+            }
+        });
+
+        }
+        else {
+
+            $("#spbtnStartStop").removeClass('fa-play');
+            $("#spbtnStartStop").addClass('fa-circle-notch');
+            $("#spbtnStartStop").addClass('fa-spin');
+
+            $.ajax({
+                url: '@Url.Action("Start", "Home")',
+                type: 'POST',
+                cache: false,
+                success: function (Data) {
+
+                    if (Data.indexOf("SSH Error") != -1) {
+
+                        $("#spbtnStartStop").addClass('fa-play');
+                        $("#spbtnStartStop").removeClass('fa-circle-notch');
+                        $("#spbtnStartStop").removeClass('fa-spin');
+                    }
+                    else {
+
+                        $("#spbtnStartStop").addClass('fa-stop');
+                        $("#spbtnStartStop").removeClass('fa-circle-notch');
+                        $("#spbtnStartStop").removeClass('fa-spin');
+
+                        document.getElementById('btnStartStop').childNodes[1].textContent = "Start";
+                    }
+
+                    getStatus();
+                }
+            });
+        }
+    });
+
 </script>
 
 <script type="text/javascript">

@@ -1,8 +1,9 @@
 ﻿using System;
 using MinecraftServerRCON;
 using qMineStat;
+using Renci.SshNet;
 
-namespace rconConsole
+namespace testConsole
 {
     class Program
     {
@@ -17,17 +18,42 @@ namespace rconConsole
             }
 
             MineStat ms = new MineStat("192.168.1.5", 25565);
-            Console.WriteLine("Minecraft server status of {0} on port {1}:", ms.GetAddress(), ms.GetPort());
-            if (ms.IsServerUp())
+            Console.WriteLine("Minecraft server status of {0} on port {1}:", ms.Address, ms.Port);
+            if (ms.ServerUp)
             {
-                Console.WriteLine("Server is online running version {0} with {1} out of {2} players.", ms.GetVersion(), ms.GetCurrentPlayers(), ms.GetMaximumPlayers());
-                Console.WriteLine("Message of the day: {0}", ms.GetMotd());
-                Console.WriteLine("Latency: {0}ms", ms.GetLatency());
+                Console.WriteLine("Server is online running version {0} with {1} out of {2} players.", ms.Version, ms.CurrentPlayers, ms.MaximumPlayers);
+                Console.WriteLine("Message of the day: {0}", ms.Motd);
+                Console.WriteLine("Latency: {0}ms", ms.Latency);
             }
             else
                 Console.WriteLine("Server is offline!");
 
+
+
+            ConnectionInfo ConnNfo = new ConnectionInfo("192.168.1.5", 22, "kutum",
+             new AuthenticationMethod[]{
+                new PasswordAuthenticationMethod("kutum","myofrene")
+             }
+         );
+
+            using (var sshclient = new SshClient(ConnNfo))
+            {
+                sshclient.Connect();
+                using (var cmd = sshclient.CreateCommand("service spigot status | grep active"))
+                {
+                    cmd.Execute();
+                    Console.WriteLine("Command>" + cmd.CommandText);
+                    Console.WriteLine("Return Value = {0}", cmd.Result);
+                }
+                sshclient.Disconnect();
+            }
+
+            Console.WriteLine("---------------------------PRESS ANY KEY");
+
             Console.ReadKey();
         }
+
+       
     }
+
 }

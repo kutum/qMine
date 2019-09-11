@@ -192,6 +192,10 @@
     <Compile Include="Migrations\201909091402514_addPortToServerCredential.Designer.cs">
       <DependentUpon>201909091402514_addPortToServerCredential.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201909111708410_sshcredentials.cs" />
+    <Compile Include="Migrations\201909111708410_sshcredentials.Designer.cs">
+      <DependentUpon>201909111708410_sshcredentials.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -389,6 +393,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201909091402514_addPortToServerCredential.resx">
       <DependentUpon>201909091402514_addPortToServerCredential.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909111708410_sshcredentials.resx">
+      <DependentUpon>201909111708410_sshcredentials.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
