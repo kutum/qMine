@@ -79,6 +79,9 @@
             <div class="card-header">
                 <img src="~/Content/img/150px-Book.png" class="d-inline" />
                 <h6 class="card-title d-inline" style="padding-left:10px">Status</h6>
+                <label style="padding-top: 1%;padding-left:20px">
+                    <input type="checkbox" class="custom-checkbox" id="chkAutoScrollStatus" checked="checked"> Auto scroll
+                </label>
             </div>
             <div class="card-body">
                 <ul class="list-group  list-group-flush" id="StatusText" style="font-size:7pt; max-height:150px; overflow: auto;">
@@ -118,18 +121,6 @@
         });
         return result;
         
-    }
-
-    function getStatusText() {
-        $.ajax({
-             url: '@Url.Action("StatusText", "Home")',
-             type: 'GET',
-            cache: false,
-            success: function (Data) {
-                document.getElementById('StatusText').innerHTML = Data;
-                $("#StatusText").scrollTop($("#StatusText").get(0).scrollHeight);
-            }
-            });
     }
 
     $("#refreshStatus").click(function () {
@@ -176,11 +167,12 @@
             document.getElementById('btnStartStop').childNodes[1].textContent = "Start";
             $("#Send").prop('disabled', true);
 
-            //document.getElementById('StatusText').innerHTML = "<li class='list-group-item list-group-item-warning'>Offline</li>";
         }
+        document.getElementById('StatusText').innerHTML = Data.StatusText;
 
-        getStatusText();
-
+        if ($("#chkAutoScrollStatus").is(':checked')) {
+            $("#StatusText").scrollTop($("#StatusText").get(0).scrollHeight);
+        }
 
     }
 

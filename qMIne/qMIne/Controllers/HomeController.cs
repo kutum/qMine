@@ -47,11 +47,14 @@ namespace qMine.Controllers
         public  JsonResult GetStatus()
         {
             var serverCredentials = GetServerCredentials(User.Identity.Name);
-            var mineStat = new MineStat(serverCredentials.IP, (ushort)serverCredentials.Port);
-            var statusViewModel = new StatusViewModel(mineStat);
-
-            statusViewModel.RefreshRate = serverCredentials.RefreshRate;
-
+       
+            var statusViewModel =
+                                    new StatusViewModel
+                                    (
+                                        new MineStat(serverCredentials.IP, (ushort)serverCredentials.Port),
+                                        serverCredentials.RefreshRate,
+                                        StatusText(serverCredentials)
+                                    );
             return Json(statusViewModel, JsonRequestBehavior.AllowGet);
         }
 
@@ -126,14 +129,12 @@ namespace qMine.Controllers
             return SSHSend("service " + serverCredentials.SSHMinecraftServiceName + " stop");
         }
 
-        public string StatusText()
+        public string StatusText(ServerCredentials serverCredentials)
         {
-            var serverCredentials = GetServerCredentials(User.Identity.Name);
-
             var response = SSHSend("service " + serverCredentials.SSHMinecraftServiceName + @" status  |  grep -w 'INFO\|Active'");
 
             response = "<li class='list-group-item list-group-item-light'>"
-                        + response.Replace(": [", ": </li> <li class='list-group-item list-group-item-light'> [") 
+                        + response.Replace(": [", ": </li> <li class='list-group-item list-group-item-light'> [")
                         + "</li>";
 
             return response;
