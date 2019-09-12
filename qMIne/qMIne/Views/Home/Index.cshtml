@@ -156,7 +156,7 @@
             document.getElementById('btnStartStop').childNodes[1].textContent = "Stop";
             $("#Send").prop('disabled', false);
 
-            getStatusText();
+           
         }
         else {
 
@@ -176,8 +176,12 @@
             document.getElementById('btnStartStop').childNodes[1].textContent = "Start";
             $("#Send").prop('disabled', true);
 
-            document.getElementById('StatusText').innerHTML = "<li class='list-group-item list-group-item-warning'>Offline</li>";
+            //document.getElementById('StatusText').innerHTML = "<li class='list-group-item list-group-item-warning'>Offline</li>";
         }
+
+        getStatusText();
+
+
     }
 
     function refreshStatus() {
