@@ -20,8 +20,8 @@ namespace qMine.Models
                                 string _SSHLogin = "", 
                                 string _SSHPassword = "", 
                                 int _SSHPort = 22, 
-                                string _SSHStartServer = "", 
-                                string _SSHStopServer = "")
+                                string SSH = "", 
+                                string _SSHMinecraftServiceName = "")
         {
             Name = _Name;
             IP = _IP;
@@ -31,8 +31,7 @@ namespace qMine.Models
             SSHLogin = _SSHLogin;
             SSHPassword = _SSHPassword;
             SSHPort = _SSHPort;
-            SSHStartServer = _SSHStartServer;
-            SSHStopServer = _SSHStopServer;
+            SSHMinecraftServiceName = _SSHMinecraftServiceName;
         }
         /// <summary>
         /// Ключ
@@ -57,12 +56,12 @@ namespace qMine.Models
         /// <summary>
         /// RCON Port
         /// </summary>
-        [Display(Name = "Rcon port")]
+        [Display(Name = "RCON port")]
         public int RconPort { get; set; }
         /// <summary>
         /// Password
         /// </summary>
-        [Display(Name = "Server Password")]
+        [Display(Name = "RCON Password")]
         public string Password { get; set; }
         /// <summary>
         /// Ssh Username
@@ -77,17 +76,13 @@ namespace qMine.Models
         /// <summary>
         /// Ssh Port
         /// </summary>
-        [Display (Name = "SSH Port")]
+        [Display(Name = "SSH Port")]
         public int SSHPort { get; set; }
         /// <summary>
         /// Ssh Start Server
         /// </summary>
-        [Display(Name = "SSH Start Minecraft Server")]
-        public string SSHStartServer { get; set; }
-        /// <summary>
-        /// Ssh Start Server
-        /// </summary>
-        [Display(Name = "SSH Stop Minecraft Server")]
-        public string SSHStopServer { get; set; }
+        [Display(Name = "SSH Name Minecraft Service")]
+        public string SSHMinecraftServiceName { get; set; }
+
     }
 }

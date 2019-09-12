@@ -109,14 +109,14 @@ namespace qMine.Controllers
         {
             var serverCredentials = GetServerCredentials(User.Identity.Name);
 
-            return SSHSend(serverCredentials.SSHStartServer);
+            return SSHSend("service " + serverCredentials.SSHMinecraftServiceName + " start");
         }
 
         public string Stop()
         {
             var serverCredentials = GetServerCredentials(User.Identity.Name);
 
-            return SSHSend(serverCredentials.SSHStopServer);
+            return SSHSend("service " + serverCredentials.SSHMinecraftServiceName + " stop");
         }
 
         public string SSHSend(string Command)
