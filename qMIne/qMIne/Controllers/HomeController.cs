@@ -24,7 +24,11 @@ namespace qMine.Controllers
                     var serverCredentials = GetServerCredentials(User.Identity.Name);
                     var mineStat = new MineStat(serverCredentials.IP, (ushort)serverCredentials.Port);
                     var statusViewModel = new StatusViewModel(mineStat);
+
+                    statusViewModel.RefreshRate = serverCredentials.RefreshRate;
+
                     return View(statusViewModel);
+
                 }
                 catch (Exception ex)
                 {
@@ -44,8 +48,11 @@ namespace qMine.Controllers
         {
             var serverCredentials = GetServerCredentials(User.Identity.Name);
             var mineStat = new MineStat(serverCredentials.IP, (ushort)serverCredentials.Port);
+            var statusViewModel = new StatusViewModel(mineStat);
 
-            return Json(mineStat, JsonRequestBehavior.AllowGet);
+            statusViewModel.RefreshRate = serverCredentials.RefreshRate;
+
+            return Json(statusViewModel, JsonRequestBehavior.AllowGet);
         }
 
         public string CallRcon(string commandRcon)
@@ -117,6 +124,19 @@ namespace qMine.Controllers
             var serverCredentials = GetServerCredentials(User.Identity.Name);
 
             return SSHSend("service " + serverCredentials.SSHMinecraftServiceName + " stop");
+        }
+
+        public string StatusText()
+        {
+            var serverCredentials = GetServerCredentials(User.Identity.Name);
+
+            var response = SSHSend("service " + serverCredentials.SSHMinecraftServiceName + @" status  |  grep -w 'INFO\|Active'");
+
+            response = "<li class='list-group-item list-group-item-light'>"
+                        + response.Replace(": [", ": </li> <li class='list-group-item list-group-item-light'> [") 
+                        + "</li>";
+
+            return response;
         }
 
         public string SSHSend(string Command)

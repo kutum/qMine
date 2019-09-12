@@ -17,11 +17,11 @@ namespace qMine.Models
                                 int _Port = 25565, 
                                 int _RconPort = 25575, 
                                 string _Password = "", 
-                                string _SSHLogin = "", 
+                                string _SSHLogin = "root", 
                                 string _SSHPassword = "", 
                                 int _SSHPort = 22, 
-                                string SSH = "", 
-                                string _SSHMinecraftServiceName = "")
+                                string _SSHMinecraftServiceName = "",
+                                int _RefreshRate = 5000)
         {
             Name = _Name;
             IP = _IP;
@@ -32,6 +32,7 @@ namespace qMine.Models
             SSHPassword = _SSHPassword;
             SSHPort = _SSHPort;
             SSHMinecraftServiceName = _SSHMinecraftServiceName;
+            RefreshRate = _RefreshRate;
         }
         /// <summary>
         /// Ключ
@@ -83,6 +84,11 @@ namespace qMine.Models
         /// </summary>
         [Display(Name = "SSH Name Minecraft Service")]
         public string SSHMinecraftServiceName { get; set; }
+        /// <summary>
+        /// Refresh status ms
+        /// </summary>
+        [Display(Name = "Refresh status (ms)")]
+        public int RefreshRate { get; set; }
 
     }
 }

@@ -200,6 +200,10 @@
     <Compile Include="Migrations\201909120516559_fixsshcredentials.Designer.cs">
       <DependentUpon>201909120516559_fixsshcredentials.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201909120643576_refreshrate.cs" />
+    <Compile Include="Migrations\201909120643576_refreshrate.Designer.cs">
+      <DependentUpon>201909120643576_refreshrate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -210,6 +214,7 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\img\150px-Book.png" />
     <Content Include="Content\img\commandblock.png" />
     <Content Include="Content\img\Enchanted_Book 2.png" />
     <Content Include="Content\img\Enchanted_Book.gif" />
@@ -262,6 +267,7 @@
     <Content Include="Scripts\esm\popper.js.map" />
     <Content Include="Scripts\esm\popper-utils.min.js.map" />
     <Content Include="Scripts\esm\popper-utils.js.map" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\FTPprofile.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\fontawesome\all.js" />
@@ -403,6 +409,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201909120516559_fixsshcredentials.resx">
       <DependentUpon>201909120516559_fixsshcredentials.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909120643576_refreshrate.resx">
+      <DependentUpon>201909120643576_refreshrate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

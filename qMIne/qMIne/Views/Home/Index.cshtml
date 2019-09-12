@@ -1,96 +1,55 @@
 ﻿@model qMine.Models.StatusViewModel
-@{
-    ViewBag.Title = "qMine Console";
-}
 
 <div class="row content container-fluid" style="padding-top:10px">
     <div class="col-lg-8 console">
-
-        <div class="card mb-3" >
+        <div class="card mb-3">
             <div class="card-header">
-                @*<img src="~/Content/img/commandblock.png" class="d-inline" />*@
                 <img src="~/Content/img/Computer-icon.png" />
-                <h6 class="card-title d-inline" style="padding-left:10px">RCON Console</h6>
+                <h6 class="card-title d-inline" style="padding-left:10px">Console</h6>
+                    <label style="padding-top: 1%;padding-left:20px">
+                            <input type="checkbox" class="custom-checkbox" id="chkAutoScroll" checked="checked"> Auto scroll
+                    </label>
+                    <button class="btn btn-light"  id="btnClearLog" style="float:right;"><span class="far fa-trash-alt"></span> Clear</button>
             </div>
             <div id="console" class="card-body">
                 <ul id="ulconsole" class="list-group" style="font-size:9pt; height:377px; overflow: auto;"></ul>
             </div>
         </div>
-
-
         <div class="input-group mb-3">
-
             <div class="input-group-prepend">
                 <span class="input-group-text">type:</span>
             </div>
-
             <input type="text" id="commandRcon" class="form-control" />
-            <div class="input-group-btn">
-                @if (Model.MineStat.ServerUp)
-                {
-                    <button type="button" class="btn btn-dark" tabindex="-1" id="sendRcon"><span id="sendStatus" class="fas fa-arrow-right"></span> Send</button>
-                }
-                else
-                {
-                    <button type="button" class="btn btn-default" disabled tabindex="-1" id="sendRcon"><span id="sendStatus" class="fas fa-arrow-right"></span> Send</button>
-                }
-            </div>
+             <button class="btn btn-dark" tabindex="-1" id="sendRcon"><span id="sendStatus" class="fas fa-arrow-right"></span> Send</button>
         </div>
-
-        <div class="checkbox card mb-3" style="display:inline-block; width:100%">
-
-            <label style="padding-top: 1%;padding-left:10px">
-                <span class="list-group-item-light">
-                    <input type="checkbox" id="chkAutoScroll" checked="checked"> Auto scroll
-                </span>
-            </label>
-
-            
-            <button type="button" class="btn btn-outline-dark" tabindex="0" id="btnClearLog" style="float:right;"><span class="far fa-trash-alt"></span> Clear</button>
-            
-        </div>
-
     </div>
-
 
     <div class="col">
         <div class="row">
             <div class="card" style="min-width:300px; min-height:200px">
                 <div class="card-header">
-
-
-                   
-                        <img class="d-inline"  id="redstoneLamp" src="~/Content/img/lamp_offline.png" />
-                        <h6 class="card-title d-inline" id="Online">Getting status...</h6>
-                    
+                    <img class="d-inline" id="redstoneLamp" src="~/Content/img/lamp_offline.png" />
+                    <h6 class="card-title d-inline" style="padding-left:10px" id="Online">Getting status...</h6>
                     @*<button id="refreshStatus" class="btn btn-outline-dark float-xl-right d-inline"><span class=" fas fa-sync"></span></button>*@
-
-                    <button class="btn btn-sm" tabindex="0" id="btnStartStop" style="float:right;"><span id="spbtnStartStop" style="margin-right:10px" class="fas"></span>...</button>
-
+                    <button class="btn btn-light" tabindex="0" id="btnStartStop" style="float:right;"><span id="spbtnStartStop" style="margin-right:10px" class="fas"></span>...</button>
                 </div>
                 <div class="card-body">
 
                     <h5>@ViewData["Error"]</h5>
-
-                    @*<div id="alertmessage"></div>*@
-
                     <div class="input-group mb-1">
                         @Html.LabelFor(x => x.MineStat.Address, new { @class = "input-group-text control-label font-weight-bold" })
                         <span class="input-group-text" id="Address">@Model.MineStat.Address : @Model.MineStat.Port</span>
                     </div>
 
+                    <div class="input-group mb-1">
+                        @Html.LabelFor(x => x.MineStat.Version, new { @class = "input-group-text control-label font-weight-bold" })
+                        <span class="input-group-text" id="Version">- @Model.MineStat.Version</span>
+                    </div>
 
-
-                        <div class="input-group mb-1">
-                            @Html.LabelFor(x => x.MineStat.Version, new { @class = "input-group-text control-label font-weight-bold" })
-                            <span class="input-group-text" id="Version">- @Model.MineStat.Version</span>
-                        </div>
-
-                        <div class="input-group">
-                            <span class="input-group-text control-label font-weight-bold">Players:</span>
-                            <span class="input-group-text" id="Players">@Model.MineStat.CurrentPlayers/@Model.MineStat.MaximumPlayers</span>
-                        </div>
-
+                    <div class="input-group">
+                        <span class="input-group-text control-label font-weight-bold">Players:</span>
+                        <span class="input-group-text" id="Players">@Model.MineStat.CurrentPlayers/@Model.MineStat.MaximumPlayers</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -102,23 +61,40 @@
                     <h6 class="card-title d-inline" style="padding-left:10px">Info</h6>
                 </div>
                 <div class="card-body" style="font-size:10pt">
-                     <a href="http://minecraft.gamepedia.com/Commands" class="list-group-item list-group-item-action list-group-item-info mb-3">
+                    <a href="http://minecraft.gamepedia.com/Commands" class="list-group-item list-group-item-action list-group-item-info mb-3">
                         <img src="~/Content/img/Enchanted_Book.gif" style="max-height:32px; padding-right:10px" />  Commands
-                     </a>
-                     <a href="http://www.minecraftinfo.com/idlist.htm" class="list-group-item list-group-item-action list-group-item-info">
+                    </a>
+                    <a href="http://www.minecraftinfo.com/idlist.htm" class="list-group-item list-group-item-action list-group-item-info">
                         <img src="~/Content/img/Enchanted_Book.gif" style="max-height:32px; padding-right:10px" /> Items ID
-                     </a>
+                    </a>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-@Scripts.Render("~/bundles/rconJS")
+<div class="row content container-fluid" >
+    <div class="col-lg-8 console">
+        <div class="card">
+            <div class="card-header">
+                <img src="~/Content/img/150px-Book.png" class="d-inline" />
+                <h6 class="card-title d-inline" style="padding-left:10px">Status</h6>
+            </div>
+            <div class="card-body">
+                <ul class="list-group  list-group-flush" id="StatusText" style="font-size:7pt; max-height:150px; overflow: auto;">
+                    <li class="list-group-item list-group-item-light">Checking... </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+    @Scripts.Render("~/bundles/rconJS")
 
 <script type="text/javascript">
 
     function getStatus() {
+
          $.ajax({
             url: '@Url.Action("GetStatus","Home")',
             type: 'GET',
@@ -129,33 +105,79 @@
             });
     }
 
+    function getStatusResult() {
+
+        var result;
+         $.ajax({
+            url: '@Url.Action("GetStatus","Home")',
+            type: 'GET',
+            async: false,
+             success: function (Data) {
+                 result = Data;
+             }
+        });
+        return result;
+        
+    }
+
+    function getStatusText() {
+        $.ajax({
+             url: '@Url.Action("StatusText", "Home")',
+             type: 'GET',
+            cache: false,
+            success: function (Data) {
+                document.getElementById('StatusText').innerHTML = Data;
+                $("#StatusText").scrollTop($("#StatusText").get(0).scrollHeight);
+            }
+            });
+    }
+
     $("#refreshStatus").click(function () {
         getStatus();
     });
 
     function refreshItems(Data) {
-        document.getElementById('Address').childNodes[0].textContent = Data.Address + " : " + Data.Port;
+        document.getElementById('Address').childNodes[0].textContent = Data.MineStat.Address + " : " + Data.MineStat.Port;
 
-        if (Data.ServerUp == true) {
+        if (Data.MineStat.ServerUp == true) {
             document.getElementById('Online').childNodes[0].textContent = "Online";
             document.getElementById('redstoneLamp').src = '@Url.Content("~/Content/img/lamp_online.png")';
-            document.getElementById('Version').childNodes[0].textContent = Data.Version;
-            document.getElementById('Players').childNodes[0].textContent = Data.CurrentPlayers + "/" + Data.MaximumPlayers;
-            $("#spbtnStartStop").hasClass('fas fa-stop');
+            document.getElementById('Version').childNodes[0].textContent = Data.MineStat.Version;
+            document.getElementById('Players').childNodes[0].textContent = Data.MineStat.CurrentPlayers + "/" + Data.MineStat.MaximumPlayers;
+
+            if ($("#spbtnStartStop").hasClass('fa-play')) {
+                $("#spbtnStartStop").removeClass('fa-play');
+            }
+
+            if (!$("#spbtnStartStop").hasClass('fa-stop') && !$("#spbtnStartStop").hasClass('fa-spin')) {
+                $("#spbtnStartStop").addClass('fa-stop');
+            }
+
             document.getElementById('btnStartStop').childNodes[1].textContent = "Stop";
             $("#Send").prop('disabled', false);
+
+            getStatusText();
         }
         else {
+
             document.getElementById('Online').childNodes[0].textContent = "Offline";
             document.getElementById('redstoneLamp').src = '@Url.Content("~/Content/img/lamp_offline.png")';
             document.getElementById('Version').childNodes[0].textContent = "-";
             document.getElementById('Players').childNodes[0].textContent = "-/-";
-            $("#spbtnStartStop").hasClass('fas fa-play');
+
+            if ($("#spbtnStartStop").hasClass('fa-stop')) {
+                $("#spbtnStartStop").removeClass('fa-stop');
+            }
+
+            if (!$("#spbtnStartStop").hasClass('fa-play') && !$("#spbtnStartStop").hasClass('fa-spin')) {
+                $("#spbtnStartStop").addClass('fa-play');
+            }
+
             document.getElementById('btnStartStop').childNodes[1].textContent = "Start";
             $("#Send").prop('disabled', true);
+
+            document.getElementById('StatusText').innerHTML = "<li class='list-group-item list-group-item-warning'>Offline</li>";
         }
-        
-       
     }
 
     function refreshStatus() {
@@ -166,10 +188,11 @@
             success: function (Data) {
                 refreshItems(Data);
             }
-            });
+        });
     }
 
-    setInterval(refreshStatus, 5000);
+    setInterval(refreshStatus,@Model.RefreshRate);
+
 </script>
 
 <script type="text/javascript">
@@ -187,68 +210,47 @@
         }
     });
 
+    function AfterSend(Data) {
+        $("#spbtnStartStop").removeClass('fa-circle-notch');
+        $("#spbtnStartStop").removeClass('fa-spin');
+
+        if (Data.indexOf("SSH Error") != -1) {
+            alert("SSH Error. Check config");
+            $("#spbtnStartStop").addClass('fa-exclamation-circle');
+        }
+    }
+
+    function BeforeSend() {
+        $("#spbtnStartStop").removeClass('fa-stop');
+        $("#spbtnStartStop").removeClass('fa-play');
+        $("#spbtnStartStop").removeClass('fa-exclamation-circle');
+
+        $("#spbtnStartStop").addClass('fa-circle-notch');
+        $("#spbtnStartStop").addClass('fa-spin');
+    }
 
     $("#btnStartStop").click(function () {
 
-        if ('@Model.MineStat.ServerUp' == 'True') {
+        BeforeSend();
 
-            $("#spbtnStartStop").removeClass('fa-stop');
-            $("#spbtnStartStop").addClass('fa-circle-notch');
-            $("#spbtnStartStop").addClass('fa-spin');
+        if (getStatusResult().MineStat.ServerUp == true) {
 
             $.ajax({
             url: '@Url.Action("Stop", "Home")',
             type: 'POST',
             cache: false,
                 success: function (Data) {
-
-                    if (Data.indexOf("SSH Error") != -1) {
-                        alert("Empty SSH command. Configure it in Account");
-
-                        $("#spbtnStartStop").removeClass('fa-circle-notch');
-                        $("#spbtnStartStop").removeClass('fa-spin');
-                        $("#spbtnStartStop").addClass('fa-stop');
-                    }
-                    else {
-                        $("#spbtnStartStop").removeClass('fa-circle-notch');
-                        $("#spbtnStartStop").removeClass('fa-spin');
-                        $("#spbtnStartStop").addClass('fa-play');
-                        document.getElementById('btnStartStop').childNodes[1].textContent = "Start";
-                    }
-
-                    getStatus();
+                    AfterSend(Data);
             }
         });
-
         }
         else {
-
-            $("#spbtnStartStop").removeClass('fa-play');
-            $("#spbtnStartStop").addClass('fa-circle-notch');
-            $("#spbtnStartStop").addClass('fa-spin');
-
             $.ajax({
                 url: '@Url.Action("Start", "Home")',
                 type: 'POST',
                 cache: false,
                 success: function (Data) {
-
-                    if (Data.indexOf("SSH Error") != -1) {
-
-                        $("#spbtnStartStop").removeClass('fa-circle-notch');
-                        $("#spbtnStartStop").removeClass('fa-spin');
-                        $("#spbtnStartStop").addClass('fa-play');
-                    }
-                    else {
-                        
-                        $("#spbtnStartStop").removeClass('fa-circle-notch');
-                        $("#spbtnStartStop").removeClass('fa-spin');
-                        $("#spbtnStartStop").addClass('fa-stop');
-
-                        document.getElementById('btnStartStop').childNodes[1].textContent = "Stop";
-                    }
-
-                    getStatus();
+                    AfterSend(Data);
                 }
             });
         }
@@ -256,7 +258,7 @@
 
 </script>
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
     $("#sendRcon").click(function () {
             sendRcon();
@@ -272,21 +274,17 @@
     function sendRcon() {
         var command = $("#commandRcon").val();
 
-        if (@Model.MineStat.ServerUp == 'false') return;
         if (command.length == 0) return;
-        
-        
-        document.getElementById('commandRcon').value = '';   
+
+        document.getElementById('commandRcon').value = '';
 
         if (command != "") {
             $("#Send").prop('disabled', true);
 
-            //$("#commandRcon").prop('disabled', true);
-
             $("#sendStatus").removeClass('fa-arrow-right');
             $("#sendStatus").addClass('fa-circle-notch');
             $("#sendStatus").addClass('fa-spin');
-            
+
         };
 
                 $.ajax({
@@ -307,8 +305,6 @@
                         $("#sendStatus").addClass('fa-arrow-right');
                         $("#sendStatus").removeClass('fa-circle-notch');
                         $("#sendStatus").removeClass('fa-spin');
-
-                        //$("#commandRcon").prop('disabled', false);
 
                         if (Data.indexOf("Unknown command") != -1) {
                             logError(Data);
@@ -334,12 +330,10 @@
                     function () {
                         logError(Data);
 
-                        //$("#commandRcon").prop('disabled', false);
-
                         $("#sendStatus").addClass('fa-arrow-right');
                         $("#sendStatus").removeClass('fa-circle-notch');
                         $("#sendStatus").removeClass('fa-spin');
                         }
                     );
-    }
+        }
 </script>
