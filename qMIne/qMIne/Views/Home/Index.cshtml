@@ -45,7 +45,7 @@
                     <h5>@ViewData["Error"]</h5>
                     <div class="input-group mb-1">
                         @Html.LabelFor(x => x.MineStat.Address, new { @class = "input-group-text control-label font-weight-bold" })
-                        <span class="input-group-text" id="Address">@Model.MineStat.Address : @Model.MineStat.Port</span>
+                        <span class="input-group-text " id="Address">@Model.MineStat.Address : @Model.MineStat.Port</span>
                     </div>
 
                     <div class="input-group mb-1">
@@ -91,7 +91,7 @@
                 </label>
             </div>
             <div class="card-body">
-                <ul class="list-group  list-group-flush" id="StatusText" style="font-size:7pt; max-height:150px; overflow: auto;">
+                <ul class="list-group  list-group-flush" id="StatusText" style="font-size:9pt; max-height:150px; overflow: auto;">
                     <li class="list-group-item list-group-item-light">Checking... </li>
                 </ul>
             </div>

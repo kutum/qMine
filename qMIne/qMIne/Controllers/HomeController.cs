@@ -22,7 +22,8 @@ namespace qMine.Controllers
             {
                 try
                 {
-                    var serverCredentials = await GetServerCredentialsAsync(User.Identity.Name);
+                    //var serverCredentials = await GetServerCredentialsAsync(User.Identity.Name);
+                    var serverCredentials = await new ServerCredentials().GetServerCredentialsAsync(User.Identity.Name);
                     var mineStat = new MineStat(serverCredentials.IP, (ushort)serverCredentials.Port);
                     var statusViewModel = new StatusViewModel(serverCredentials,mineStat);
                    
@@ -101,14 +102,6 @@ namespace qMine.Controllers
             return View();
         }
 
-        public ServerCredentials GetServerCredentials(string UserName)
-        {
-            using (var context = new ApplicationDbContext())
-            {
-                return context.ServerCredentials.FirstOrDefault(x => x.Name == UserName);
-            }
-        }
-
         public string Start(ServerCredentials serverCredentials)
         {
             return SSHSend("service " + serverCredentials.SSHMinecraftServiceName + " start",serverCredentials);
@@ -169,16 +162,5 @@ namespace qMine.Controllers
 
         }
 
-        #region Async
-
-        public async Task<ServerCredentials> GetServerCredentialsAsync(string UserName)
-        {
-            using (var context = new ApplicationDbContext())
-            {
-                return await context.ServerCredentials.Where(x => x.Name == UserName).FirstOrDefaultAsync();
-            }
-        }
-
-        #endregion
     }
 }

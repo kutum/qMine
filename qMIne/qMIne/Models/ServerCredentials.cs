@@ -1,6 +1,10 @@
-﻿using System;
+﻿using qMine.Context;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 
 namespace qMine.Models
@@ -91,6 +95,22 @@ namespace qMine.Models
         /// </summary>
         [Display(Name = "Refresh status (ms)")]
         public int RefreshRate { get; set; }
+
+        public async Task<ServerCredentials> GetServerCredentialsAsync(string UserName)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                return await context.ServerCredentials.Where(x => x.Name == UserName).FirstOrDefaultAsync();
+            }
+        }
+
+        public ServerCredentials GetServerCredentials(string UserName)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                return context.ServerCredentials.FirstOrDefault(x => x.Name == UserName);
+            }
+        }
 
     }
  
