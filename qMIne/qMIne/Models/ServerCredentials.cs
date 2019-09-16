@@ -1,5 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Web.Script.Serialization;
 
 namespace qMine.Models
 {
@@ -91,4 +93,5 @@ namespace qMine.Models
         public int RefreshRate { get; set; }
 
     }
+ 
 }

@@ -15,20 +15,18 @@ namespace qMine.Controllers
 {
     public class HomeController : Controller
     {
-        public  ActionResult Index()
+        public async Task<ActionResult> Index()
         {
+           
             if (Request.IsAuthenticated)
             {
                 try
                 {
-                    var serverCredentials = GetServerCredentials(User.Identity.Name);
+                    var serverCredentials = await GetServerCredentialsAsync(User.Identity.Name);
                     var mineStat = new MineStat(serverCredentials.IP, (ushort)serverCredentials.Port);
-                    var statusViewModel = new StatusViewModel(mineStat);
-
-                    statusViewModel.RefreshRate = serverCredentials.RefreshRate;
-
+                    var statusViewModel = new StatusViewModel(serverCredentials,mineStat);
+                   
                     return View(statusViewModel);
-
                 }
                 catch (Exception ex)
                 {
@@ -44,21 +42,19 @@ namespace qMine.Controllers
             }
         }
 
-        public  JsonResult GetStatus()
+        public JsonResult GetStatus(ServerCredentials serverCredentials)
         {
-            var serverCredentials = GetServerCredentials(User.Identity.Name);
-       
             var statusViewModel =
                                     new StatusViewModel
                                     (
+                                        serverCredentials,
                                         new MineStat(serverCredentials.IP, (ushort)serverCredentials.Port),
-                                        serverCredentials.RefreshRate,
                                         StatusText(serverCredentials)
                                     );
             return Json(statusViewModel, JsonRequestBehavior.AllowGet);
         }
 
-        public string CallRcon(string commandRcon)
+        public string CallRcon(string commandRcon, ServerCredentials serverCredentials)
         {
             var answer = "";
 
@@ -66,8 +62,6 @@ namespace qMine.Controllers
             {
                 using (var rcon = RCONClient.INSTANCE)
                 {
-                    var serverCredentials = GetServerCredentials(User.Identity.Name);
-
                     if (serverCredentials != null)
                     {
                         rcon.setupStream(serverCredentials.IP, serverCredentials.RconPort, password: serverCredentials.Password);
@@ -115,23 +109,19 @@ namespace qMine.Controllers
             }
         }
 
-        public string Start()
+        public string Start(ServerCredentials serverCredentials)
         {
-            var serverCredentials = GetServerCredentials(User.Identity.Name);
-
-            return SSHSend("service " + serverCredentials.SSHMinecraftServiceName + " start");
+            return SSHSend("service " + serverCredentials.SSHMinecraftServiceName + " start",serverCredentials);
         }
 
-        public string Stop()
+        public string Stop(ServerCredentials serverCredentials)
         {
-            var serverCredentials = GetServerCredentials(User.Identity.Name);
-
-            return SSHSend("service " + serverCredentials.SSHMinecraftServiceName + " stop");
+            return SSHSend("service " + serverCredentials.SSHMinecraftServiceName + " stop",serverCredentials);
         }
 
         public string StatusText(ServerCredentials serverCredentials)
         {
-            var response = SSHSend("service " + serverCredentials.SSHMinecraftServiceName + @" status  |  grep -w 'INFO\|Active'");
+            var response = SSHSend("service " + serverCredentials.SSHMinecraftServiceName + @" status  |  grep -w 'INFO\|Active'",serverCredentials);
 
             response = "<li class='list-group-item list-group-item-light'>"
                         + response.Replace(": [", ": </li> <li class='list-group-item list-group-item-light'> [")
@@ -140,14 +130,12 @@ namespace qMine.Controllers
             return response;
         }
 
-        public string SSHSend(string Command)
+        public string SSHSend(string Command, ServerCredentials serverCredentials)
         {
             if(Command == null)
             {
                 return "SSH Error: Empty command";
             }
-
-            var serverCredentials = GetServerCredentials(User.Identity.Name);
 
             ConnectionInfo ConnNfo = 
                 new ConnectionInfo(serverCredentials.IP, serverCredentials.SSHPort, serverCredentials.SSHLogin,
@@ -182,13 +170,6 @@ namespace qMine.Controllers
         }
 
         #region Async
-        public async Task<JsonResult> GetStatusAsync()
-        {
-            var serverCredentials = await GetServerCredentialsAsync(User.Identity.Name);
-            var mineStat = new MineStat(serverCredentials.IP, (ushort)serverCredentials.Port);
-
-            return Json(mineStat, JsonRequestBehavior.AllowGet);
-        }
 
         public async Task<ServerCredentials> GetServerCredentialsAsync(string UserName)
         {
@@ -198,45 +179,6 @@ namespace qMine.Controllers
             }
         }
 
-        [HttpPost]
-        public async Task<string> CallRconAsync(string commandRcon)
-        {
-            var answer = "";
-
-            try
-            {
-                using (var rcon = RCONClient.INSTANCE)
-                {
-                    var serverCredentials = await GetServerCredentialsAsync(User.Identity.Name);
-
-                    if (serverCredentials != null)
-                    {
-                        rcon.setupStream(serverCredentials.IP, serverCredentials.RconPort, password: serverCredentials.Password);
-                        answer = rcon.sendMessage(RCONMessageType.Command, commandRcon).RemoveColorCodes();
-
-                        if (rcon.isInit == false)
-                        {
-                            answer = "Error: Server is offline!";
-                        }
-                        else if (rcon.ErrorMsg.Length > 0)
-                        {
-                            answer = rcon.ErrorMsg;
-                        }
-                    }
-                    else
-                    {
-                        answer = "Error: Configure connection!";
-                    }
-
-                }
-            }
-            catch (Exception ex)
-            {
-                answer = ex.Message;
-            }
-
-            return answer;
-        }
         #endregion
     }
 }

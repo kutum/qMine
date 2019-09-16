@@ -4,21 +4,17 @@ namespace qMine.Models
 {
     public class StatusViewModel
     {
-        public StatusViewModel(MineStat _MineStat)
-        {
-            MineStat = _MineStat;
-        }
 
-        public StatusViewModel(MineStat _MineStat,int _RefreshRate, string _StatusText = "")
+        public StatusViewModel(ServerCredentials _serverCredentials, MineStat _mineStat,string _StatusText = "")
         {
-            MineStat = _MineStat;
-            RefreshRate = _RefreshRate;
+            MineStat = _mineStat;
+            serverCredentials = _serverCredentials;
             StatusText = _StatusText;
         }
 
         public MineStat MineStat { get; set; }
 
-        public int RefreshRate { get; set; }
+        public ServerCredentials serverCredentials { get; set; }
 
         public string StatusText { get; set; }
     }

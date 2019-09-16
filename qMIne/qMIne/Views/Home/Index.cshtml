@@ -31,7 +31,14 @@
                     <img class="d-inline" id="redstoneLamp" src="~/Content/img/lamp_offline.png" />
                     <h6 class="card-title d-inline" style="padding-left:10px" id="Online">Getting status...</h6>
                     @*<button id="refreshStatus" class="btn btn-outline-dark float-xl-right d-inline"><span class=" fas fa-sync"></span></button>*@
-                    <button class="btn btn-light" tabindex="0" id="btnStartStop" style="float:right;"><span id="spbtnStartStop" style="margin-right:10px" class="fas"></span>...</button>
+                    @if (Model.serverCredentials.SSHLogin == "root")
+                    {
+                        <button class="btn btn-light" tabindex="0" id="btnStartStop" style="float:right;"><span id="spbtnStartStop" style="margin-right:10px" class="fas"></span>...</button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-light" disabled tabindex="0" id="btnStartStop" style="float:right;"><span id="spbtnStartStop" style="margin-right:10px" class="fas"></span>...</button>
+                    }
                 </div>
                 <div class="card-body">
 
@@ -92,7 +99,7 @@
     </div>
 </div>
 
-    @Scripts.Render("~/bundles/rconJS")
+@Scripts.Render("~/bundles/rconJS")
 
 <script type="text/javascript">
 
@@ -101,7 +108,8 @@
          $.ajax({
             url: '@Url.Action("GetStatus","Home")',
             type: 'GET',
-            cache: false,
+             cache: false,
+             data: @Html.Raw(Json.Encode(Model.serverCredentials)),
             success: function (Data) {
                 refreshItems(Data);
             }
@@ -112,8 +120,9 @@
 
         var result;
          $.ajax({
-            url: '@Url.Action("GetStatus","Home")',
-            type: 'GET',
+            url: '@Url.Action("GetStatus", "Home")',
+             type: 'GET',
+            data: @Html.Raw(Json.Encode(Model.serverCredentials)),
             async: false,
              success: function (Data) {
                  result = Data;
@@ -178,8 +187,9 @@
 
     function refreshStatus() {
          $.ajax({
-            url: '@Url.Action("GetStatus","Home")',
-            type: 'GET',
+            url: '@Url.Action("GetStatus", "Home")',
+             type: 'GET',
+            data: @Html.Raw(Json.Encode(Model.serverCredentials)),
             cache: false,
             success: function (Data) {
                 refreshItems(Data);
@@ -187,7 +197,7 @@
         });
     }
 
-    setInterval(refreshStatus,@Model.RefreshRate);
+    setInterval(refreshStatus,@Model.serverCredentials.RefreshRate);
 
 </script>
 
@@ -232,7 +242,8 @@
         if (getStatusResult().MineStat.ServerUp == true) {
 
             $.ajax({
-            url: '@Url.Action("Stop", "Home")',
+                url: '@Url.Action("Stop", "Home")',
+                data: @Html.Raw(Json.Encode(Model.serverCredentials)),
             type: 'POST',
             cache: false,
                 success: function (Data) {
@@ -243,6 +254,7 @@
         else {
             $.ajax({
                 url: '@Url.Action("Start", "Home")',
+                data: @Html.Raw(Json.Encode(Model.serverCredentials)),
                 type: 'POST',
                 cache: false,
                 success: function (Data) {
@@ -254,7 +266,7 @@
 
 </script>
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
     $("#sendRcon").click(function () {
             sendRcon();
@@ -286,7 +298,10 @@
                 $.ajax({
                     url: '@Url.Action("CallRcon", "Home")',
                     type: 'POST',
-                    data: { commandRcon: command },
+                    data: {
+                                commandRcon: command,
+                                serverCredentials: @Html.Raw(Json.Encode(Model.serverCredentials)) 
+                            },
                     cache: false,
 
                     success: function (Data) {
