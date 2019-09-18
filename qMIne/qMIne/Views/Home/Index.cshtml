@@ -1,32 +1,35 @@
 ﻿@model qMine.Models.StatusViewModel
 
-<div class="row content container-fluid" style="padding-top:10px">
-    <div class="col-lg-8 console">
-        <div class="card mb-3">
-            <div class="card-header">
-                <img src="~/Content/img/Computer-icon.png" />
-                <h6 class="card-title d-inline" style="padding-left:10px">Console</h6>
-                    <label style="padding-top: 1%;padding-left:20px">
-                            <input type="checkbox" class="custom-checkbox" id="chkAutoScroll" checked="checked"> Auto scroll
-                    </label>
-                    <button class="btn btn-light"  id="btnClearLog" style="float:right;"><span class="far fa-trash-alt"></span> Clear</button>
-            </div>
-            <div id="console" class="card-body">
-                <ul id="ulconsole" class="list-group" style="font-size:9pt; height:377px; overflow: auto;"></ul>
-            </div>
-        </div>
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text">type:</span>
-            </div>
-            <input type="text" id="commandRcon" class="form-control" />
-             <button class="btn btn-dark" tabindex="-1" id="sendRcon"><span id="sendStatus" class="fas fa-arrow-right"></span> Send</button>
-        </div>
-    </div>
+@{
+    ViewBag.Title = "LOG IN";
+}
 
-    <div class="col">
-        <div class="row">
-            <div class="card" style="min-width:300px; min-height:200px">
+<div style="padding-top:10px">
+    <div class="row">
+        <div class="col-lg-8" style="padding:0">
+            <div class="card" style="width:100%; min-height:300px">
+                <div class="card-header">
+                    <img src="~/Content/img/Computer-icon.png" />
+                    <h6 class="card-title d-inline" style="padding-left:10px">Console</h6>
+                    <label style="padding-top: 1%;padding-left:20px">
+                        <input type="checkbox" class="custom-checkbox" id="chkAutoScroll" checked="checked">Auto scroll
+                    </label>
+                    <button class="btn btn-light" id="btnClearLog" style="float:right;"><span class="far fa-trash-alt"></span> Clear</button>
+                </div>
+                <div id="console" class="card-body">
+                    <ul id="ulconsole" class="list-group" style="font-size:9pt; overflow: auto;"></ul>
+                </div>
+            </div>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">type:</span>
+                </div>
+                <input type="text" id="commandRcon" class="form-control" />
+                <button class="btn btn-dark" tabindex="-1" id="sendRcon"><span id="sendStatus" class="fas fa-arrow-right"></span> Send</button>
+            </div>
+        </div>
+        <div class="col" style="padding:0">
+            <div class="card" style="width:100%; min-height:338px">
                 <div class="card-header">
                     <img class="d-inline" id="redstoneLamp" src="~/Content/img/lamp_offline.png" />
                     <h6 class="card-title d-inline" style="padding-left:10px" id="Online">Getting status...</h6>
@@ -58,11 +61,30 @@
                         <span class="input-group-text" id="Players">@Model.MineStat.CurrentPlayers/@Model.MineStat.MaximumPlayers</span>
                     </div>
                 </div>
+
             </div>
         </div>
 
-        <div class="row" style="padding-top:15px; ">
-            <div class="card" style="min-width:300px; min-height:200px">
+    </div>
+    <div class="row">
+        <div class="col-lg-8" style="padding:0; ">
+            <div class="card" style="width:100%; min-height:235px ">
+                <div class="card-header">
+                    <img src="~/Content/img/150px-Book.png" class="d-inline" />
+                    <h6 class="card-title d-inline" style="padding-left:10px">Status</h6>
+                    <label style="padding-top: 1%;padding-left:20px">
+                        <input type="checkbox" class="custom-checkbox" id="chkAutoScrollStatus" checked="checked"> Auto scroll
+                    </label>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group  list-group-flush" id="StatusText" style="font-size:9pt; max-height:150px; overflow: auto;">
+                        <li class="list-group-item list-group-item-light">Checking... </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col" style="padding:0">
+            <div class="card" style="width:100%; min-height:235px">
                 <div class="card-header">
                     <img src="~/Content/img/Enchanting_Table.png" class="d-inline" />
                     <h6 class="card-title d-inline" style="padding-left:10px">Info</h6>
@@ -75,25 +97,6 @@
                         <img src="~/Content/img/Enchanted_Book.gif" style="max-height:32px; padding-right:10px" /> Items ID
                     </a>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row content container-fluid" >
-    <div class="col-lg-8 console">
-        <div class="card">
-            <div class="card-header">
-                <img src="~/Content/img/150px-Book.png" class="d-inline" />
-                <h6 class="card-title d-inline" style="padding-left:10px">Status</h6>
-                <label style="padding-top: 1%;padding-left:20px">
-                    <input type="checkbox" class="custom-checkbox" id="chkAutoScrollStatus" checked="checked"> Auto scroll
-                </label>
-            </div>
-            <div class="card-body">
-                <ul class="list-group  list-group-flush" id="StatusText" style="font-size:9pt; max-height:150px; overflow: auto;">
-                    <li class="list-group-item list-group-item-light">Checking... </li>
-                </ul>
             </div>
         </div>
     </div>
