@@ -208,6 +208,10 @@
     <Compile Include="Migrations\201909120643576_refreshrate.Designer.cs">
       <DependentUpon>201909120643576_refreshrate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201909271211367_mapurl.cs" />
+    <Compile Include="Migrations\201909271211367_mapurl.Designer.cs">
+      <DependentUpon>201909271211367_mapurl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -419,6 +423,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201909120643576_refreshrate.resx">
       <DependentUpon>201909120643576_refreshrate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909271211367_mapurl.resx">
+      <DependentUpon>201909271211367_mapurl.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

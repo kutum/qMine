@@ -95,6 +95,11 @@ namespace qMine.Models
         /// </summary>
         [Display(Name = "Refresh status (ms)")]
         public int RefreshRate { get; set; }
+        /// <summary>
+        /// Dynmap Link
+        /// </summary>
+        [Display(Name = "Dynmap Link")]
+        public string MapUrl { get; set; }
 
         public async Task<ServerCredentials> GetServerCredentialsAsync(string UserName)
         {

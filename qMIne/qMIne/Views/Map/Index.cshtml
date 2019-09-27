@@ -13,9 +13,11 @@
                 
             </div>
             <div class="card-body" id="Map">
-                @if (Model.ServerUp)
+                @if (ViewBag.ServerUp)
                 {
-                    <iframe src="http://192.168.1.5:8123/?worldname=world&mapname=surface&zoom=6&x=274&y=64&z=184" style="min-height:500px" width="100%" frameborder="0"></iframe>
+                    @*<iframe src="http://192.168.1.5:8123/?worldname=world&mapname=surface&zoom=6&x=274&y=64&z=184" style="min-height:500px" width="100%" frameborder="0"></iframe>*@
+                    <iframe src="@ViewBag.MapUrl" style="min-height:500px" width="100%" frameborder="0"></iframe>
+
                 }
                 else
                 {
@@ -23,7 +25,10 @@
                         Offline...
                     </span>
                 }
+
+                @ViewBag.Error
             </div>
+            
         </div>
     </div>
 </div>
