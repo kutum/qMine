@@ -9,10 +9,10 @@
 
 
 
-<div class="row content container-fluid" style="padding-top:10px">
+<div class="row" style="padding-top:10px">
     <div class="col-lg-8">
-        <div class="card">
-            <div class="card-header">
+        <div class="card border-0">
+            <div class="card-header text-light">
                 <h5 class="card-title d-inline">@ViewBag.Title </h5>
 
                 @if (ViewBag.StatusMessage == "Error")
@@ -45,7 +45,7 @@
 
                 @if (Model.HasPassword)
                 {
-                    @Html.ActionLink("Change password", "ChangePassword", "Manage", new { id = 1 }, new { @class = "btn btn-outline-dark" })
+                    @Html.ActionLink("Change password", "ChangePassword", "Manage", new { id = 1 }, new { @class = "btn btn-dark" })
                 }
                 else
                 {

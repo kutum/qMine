@@ -1,19 +1,16 @@
 ﻿body {
-    /*padding-top: 50px;
-    padding-bottom: 20px;*/
-    /*background: url(img/bigscreened.png) repeat; */
-    background-color:lightgrey;
+    background: url(img/stone.jpg) repeat;
+    background-color: lightgrey;
+    font-family: 'MinecraftiaRegular';
+    font-weight: normal;
+    font-style: normal;
 }
 
-/* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
 }
 
-/* Override the default bootstrap behavior where horizontal description lists 
-   will truncate terms that are too long to fit in the left column 
-*/
 .dl-horizontal dt {
     white-space: normal;
 }
@@ -36,3 +33,29 @@
 .console, .status {
     /*margin-bottom: 5%;*/
 }
+
+.navbar-wood {
+    background-image: url(img/darkwood.png);
+    /*font-weight:600;*/
+}
+
+.card-header {
+    background-image: url(img/greywool.png);
+    height:60px;
+    
+}
+
+.card-body {
+    background-image: url(img/whitewool.png);
+}
+
+.list-group-item-white-wool {
+    background-image: url(img/whitewool.png);
+}
+
+.btn {
+    background-image: url(img/wood.png)
+    /*for IIS NEED background-image: url(../../Content/img/wood.png)*/
+}
+
+

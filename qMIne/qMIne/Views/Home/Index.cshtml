@@ -1,26 +1,27 @@
 ﻿@model qMine.Models.StatusViewModel
 
 @{
-    ViewBag.Title = "LOG IN";
+    ViewBag.Title = "CONSOLE";
 }
 
 <div style="padding-top:10px">
     <div class="row">
         <div class="col-lg-8" style="padding:0">
-            <div class="card" style="width:100%; min-height:300px">
-                <div class="card-header">
-                    <img src="~/Content/img/Computer-icon.png" />
-                    <h6 class="card-title d-inline" style="padding-left:10px">Console</h6>
-                    <label style="padding-top: 1%;padding-left:20px">
-                        <input type="checkbox" class="custom-checkbox" id="chkAutoScroll" checked="checked">Auto scroll
+            <div class="card border-0" style="width:100%; min-height:300px">
+                <div class="card-header text-white">
+
+                    <img src="~/Content/img/Computer-icon.png" class="d-inline" />
+                    <h6 class="card-title d-inline">Console</h6>
+                    <label style="padding-top: 1%;padding-left:13px">
+                        <input type="checkbox" class="custom-checkbox" id="chkAutoScroll" checked="checked"> Auto scroll
                     </label>
-                    <button class="btn btn-light" id="btnClearLog" style="float:right;"><span class="far fa-trash-alt"></span> Clear</button>
+                    <button class="btn btn-dark" id="btnClearLog" style="float:right;"><span class="far fa-trash-alt"></span> Clear</button>
                 </div>
                 <div id="console" class="card-body">
                     <ul id="ulconsole" class="list-group" style="font-size:9pt; overflow: auto;"></ul>
                 </div>
             </div>
-            <div class="input-group">
+            <div class="input-group" >
                 <div class="input-group-prepend">
                     <span class="input-group-text">type:</span>
                 </div>
@@ -29,21 +30,21 @@
             </div>
         </div>
         <div class="col" style="padding:0">
-            <div class="card" style="width:100%; min-height:338px">
-                <div class="card-header">
+            <div class="card border-0" style="width:100%; min-height:338px">
+                <div class="card-header text-light">
                     <img class="d-inline" id="redstoneLamp" src="~/Content/img/lamp_offline.png" />
                     <h6 class="card-title d-inline" style="padding-left:10px" id="Online">Getting status...</h6>
                     @*<button id="refreshStatus" class="btn btn-outline-dark float-xl-right d-inline"><span class=" fas fa-sync"></span></button>*@
                     @if (Model.serverCredentials.SSHLogin == "root")
                     {
-                        <button class="btn btn-light" tabindex="0" id="btnStartStop" style="float:right;"><span id="spbtnStartStop" style="margin-right:10px" class="fas"></span>...</button>
+                        <button class="btn btn-dark" tabindex="0" id="btnStartStop" style="float:right;"><span id="spbtnStartStop" style="margin-right:10px" class="fas"></span>...</button>
                     }
                     else
                     {
-                        <button class="btn btn-light" disabled tabindex="0" id="btnStartStop" style="float:right;"><span id="spbtnStartStop" style="margin-right:10px" class="fas"></span>...</button>
+                        <button class="btn btn-dark" disabled tabindex="0" id="btnStartStop" style="float:right;"><span id="spbtnStartStop" style="margin-right:10px" class="fas"></span>...</button>
                     }
                 </div>
-                <div class="card-body">
+                <div class="card-body ">
 
                     <h5>@ViewData["Error"]</h5>
                     <div class="input-group mb-1">
@@ -68,32 +69,33 @@
     </div>
     <div class="row">
         <div class="col-lg-8" style="padding:0; ">
-            <div class="card" style="width:100%; min-height:250px;">
-                <div class="card-header">
+            <div class="card border-0" style="width:100%; min-height:250px;">
+                <div class="card-header text-light">
                     <img src="~/Content/img/150px-Book.png" class="d-inline" />
-                    <h6 class="card-title d-inline" style="padding-left:10px">Status</h6>
-                    <label style="padding-top: 1%;padding-left:20px">
+                    <h6 class="card-title d-inline">Status</h6>
+
+                    <label style="padding-top:1%; padding-left:20px">
                         <input type="checkbox" class="custom-checkbox" id="chkAutoScrollStatus" checked="checked"> Auto scroll
                     </label>
                 </div>
                 <div class="card-body">
-                    <ul class="list-group  list-group-flush" id="StatusText" style="font-size:9pt; max-height:130px; overflow: auto;">
-                        <li class="list-group-item list-group-item-light">Checking... </li>
+                    <ul class="list-group  list-group-flush" id="StatusText" style="font-size:8pt; max-height:130px; overflow: auto;">
+                        <li class="list-group-item">Checking... </li>
                     </ul>
                 </div>
             </div>
         </div>
         <div class="col" style="padding:0">
-            <div class="card" style="width:100%; min-height:250px">
-                <div class="card-header">
+            <div class="card border-0" style="width:100%; min-height:250px">
+                <div class="card-header text-light">
                     <img src="~/Content/img/Enchanting_Table.png" class="d-inline" />
                     <h6 class="card-title d-inline" style="padding-left:10px">Info</h6>
                 </div>
                 <div class="card-body" style="font-size:10pt">
-                    <a href="http://minecraft.gamepedia.com/Commands" class="list-group-item list-group-item-action list-group-item-info mb-3">
+                    <a href="http://minecraft.gamepedia.com/Commands" class="list-group-item list-group-item-action list-group-item-info mb-3" style="width:200px">
                         <img src="~/Content/img/Enchanted_Book.gif" style="max-height:32px; padding-right:10px" />  Commands
                     </a>
-                    <a href="http://www.minecraftinfo.com/idlist.htm" class="list-group-item list-group-item-action list-group-item-info">
+                    <a href="http://www.minecraftinfo.com/idlist.htm" class="list-group-item list-group-item-action list-group-item-info" style="width:200px">
                         <img src="~/Content/img/Enchanted_Book.gif" style="max-height:32px; padding-right:10px" /> Items ID
                     </a>
                 </div>

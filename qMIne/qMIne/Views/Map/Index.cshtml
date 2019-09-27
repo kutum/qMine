@@ -1,30 +1,31 @@
-﻿@model qMineStat.MineStat
+﻿@model qMine.Models.MapView
 @{
     ViewBag.Title = "Map";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="row content container-fluid" style="padding-top:10px">
-    <div class="col">
-        <div class="card mb-3">
-            <div class="card-header">
-                <img src="~/Content/img/Explorer_Maps.gif" width="32px"/>
-                <h6 class="card-title d-inline" style="padding-left:10px">Map</h6>
-                
-            </div>
-            <div class="card-body" id="Map">
-                @if (ViewBag.ServerUp)
+<div class="row" style="padding-top:10px; height:85vh">
+    <div class="col" style="height:100%">
+        <div class="card mb-3 border-0" style="height:100%">
+            <div class="card-header text-light">
+                <img src="~/Content/img/Explorer_Maps.gif" width="32px" />
+                <h6 class="card-title d-inline" style="padding-left:10px; padding-right:10px">Map</h6>
+                @if (Model.ServerUp)
                 {
-                    @*<iframe src="http://192.168.1.5:8123/?worldname=world&mapname=surface&zoom=6&x=274&y=64&z=184" style="min-height:500px" width="100%" frameborder="0"></iframe>*@
-                    <iframe src="@ViewBag.MapUrl" style="min-height:500px" width="100%" frameborder="0"></iframe>
-
+                    <span class=" text-success d-inline" style="max-width:100px">
+                        Online
+                    </span>
                 }
                 else
                 {
-                    <span class="input-group-text text-dark" style="max-width:100px">
-                        Offline...
+                    <span class=" text-danger d-inline" style="max-width:100px;">
+                        Offline
                     </span>
                 }
+            </div>
+            <div class="card-body" id="Map" style="height:100%" >
+                
+                    <iframe src="@Model.MapUrl" style="height:100%; width:100%" frameborder="0"></iframe>
 
                 @ViewBag.Error
             </div>

@@ -116,8 +116,8 @@ namespace qMine.Controllers
         {
             var response = SSHSend("service " + serverCredentials.SSHMinecraftServiceName + @" status  |  grep -w 'INFO\|Active'",serverCredentials);
 
-            response = "<li class='list-group-item list-group-item-light'>"
-                        + response.Replace(": [", ": </li> <li class='list-group-item list-group-item-light'> [")
+            response = "<li class='list-group-item'>"
+                        + response.Replace(": [", ": </li> <li class='list-group-item'> [")
                         + "</li>";
 
             return response;

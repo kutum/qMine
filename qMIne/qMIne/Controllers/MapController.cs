@@ -16,10 +16,11 @@ namespace qMIne.Controllers
                 {
                     var serverCredentials = await new ServerCredentials().GetServerCredentialsAsync(User.Identity.Name);
 
-                    ViewBag.ServerUp = new MineStat(serverCredentials.IP, (ushort)serverCredentials.Port).ServerUp;
-                    ViewBag.MapUrl = serverCredentials.MapUrl;
 
-                    return View();
+                    return View(new MapView {
+                                                ServerUp = new MineStat(serverCredentials.IP, (ushort)serverCredentials.Port).ServerUp,
+                                                MapUrl = serverCredentials.MapUrl
+                                            });
                 }
                 catch (Exception e)
                 {
