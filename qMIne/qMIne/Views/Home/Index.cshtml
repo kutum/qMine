@@ -22,7 +22,7 @@
             </div>
             <div class="input-group" >
                 <div class="input-group-prepend">
-                    <span class="input-group-text">type:</span>
+                    <span class="input-group-text">Command:</span>
                 </div>
                 <input type="text" id="commandRcon" class="form-control" />
                 <button class="btn btn-dark" tabindex="-1" id="sendRcon"><span id="sendStatus" class="fas fa-arrow-right"></span> Send</button>
@@ -43,12 +43,12 @@
                         <button class="btn btn-dark" disabled tabindex="0" id="btnStartStop" style="float:right;"><span id="spbtnStartStop" style="margin-right:10px" class="fas"></span>...</button>
                     }
                 </div>
-                <div class="card-body ">
+                <div class="card-body">
 
                     <h5>@ViewData["Error"]</h5>
                     <div class="input-group mb-1">
                         @Html.LabelFor(x => x.MineStat.Address, new { @class = "input-group-text control-label font-weight-bold" })
-                        <span class="input-group-text " id="Address">@Model.MineStat.Address : @Model.MineStat.Port</span>
+                        <span class="input-group-text" id="Address">@Model.MineStat.Address : @Model.MineStat.Port</span>
                     </div>
 
                     <div class="input-group mb-1">
@@ -68,29 +68,29 @@
     </div>
     <div class="row">
         <div class="col-lg-8" style="padding:0; ">
-            <div class="card border-0" style="width:100%; min-height:250px;">
+            <div class="card border-0" style="width:100%;">
                 <div class="card-header text-light">
                     <img src="~/Content/img/150px-Book.png" class="d-inline" />
                     <h6 class="card-title d-inline">Status</h6>
 
-                    <label style="padding-top:1%; padding-left:20px">
+                    <label style="padding-top:1%; padding-left:10px">
                         <input type="checkbox" class="custom-checkbox" id="chkAutoScrollStatus" checked="checked"> Auto scroll
                     </label>
                 </div>
-                <div class="card-body">
-                    <ul class="list-group  list-group-flush" id="StatusText" style="font-size:8pt; max-height:130px; overflow: auto;">
+                <div class="card-body" style="height:35vh">
+                    <ul class="list-group  list-group-flush" id="StatusText" style="font-size: 9pt; max-height:28vh; overflow: auto; ">
                         <li class="list-group-item">Checking... </li>
                     </ul>
                 </div>
             </div>
         </div>
         <div class="col" style="padding:0">
-            <div class="card border-0" style="width:100%; min-height:250px">
+            <div class="card border-0" style="width:100%;">
                 <div class="card-header text-light">
                     <img src="~/Content/img/Enchanting_Table.png" class="d-inline" />
                     <h6 class="card-title d-inline" style="padding-left:10px">Info</h6>
                 </div>
-                <div class="card-body" style="font-size:10pt">
+                <div class="card-body" style="font-size:10pt; height:35vh;">
                     <a href="http://minecraft.gamepedia.com/Commands" class="list-group-item list-group-item-action list-group-item-info mb-3" style="width:200px">
                         <img src="~/Content/img/Enchanted_Book.gif" style="max-height:32px; padding-right:10px" />  Commands
                     </a>

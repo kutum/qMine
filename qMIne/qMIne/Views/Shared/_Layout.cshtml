@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using qMine.Models;
+@using qMine.Context;
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -29,13 +32,16 @@
                     <li class="nav-item active">
                         <a class="nav-link" href="@Url.Action("Index", "Home")">Console <span class="sr-only">(current)</span></a>
                     </li>
-
-                    <li class="nav-item active">
-                        <a class="nav-link" href="@Url.Action("Index", "Map")">Map</a>
-                    </li>
-                    @*<li class="nav-item active">
-                        <a class="nav-link" href="@Url.Action("Contact", "Home")">Contact</a>
-                    </li>*@
+                    using (var context = new ApplicationDbContext())
+                    {
+                        var mapUrl = context.ServerCredentials.Where(x => x.Name == User.Identity.Name).FirstOrDefault().MapUrl;
+                        if (mapUrl != null)
+                        {
+                            <li class="nav-item active">
+                                <a class="nav-link" href="@Url.Action("Index", "Map")">Map</a>
+                            </li>
+                        }
+                    }
                 }
             </ul>
             @Html.Partial("_LoginPartial")
@@ -47,7 +53,7 @@
 
     @RenderSection("scripts", required: false)
 
-    <div class="container body-content">
+    <div class="body-content">
         @RenderBody()
 
     </div>

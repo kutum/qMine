@@ -1,14 +1,14 @@
 ﻿body {
     background: url(img/stone.jpg) repeat;
     background-color: lightgrey;
-    font-family: 'MinecraftiaRegular';
+    /*font-family: 'MinecraftiaRegular';*/
     font-weight: normal;
     font-style: normal;
 }
 
 .body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+    padding-left: 50px;
+    padding-right: 50px;
 }
 
 .dl-horizontal dt {
@@ -53,7 +53,8 @@
 }
 
 .btn {
-    background-image: url(img/wood.png)
+    background-image: url(img/wood.png);
+    -webkit-text-stroke: 0.5px lightgrey;
     /*for IIS NEED background-image: url(../../Content/img/wood.png)*/
 }
 

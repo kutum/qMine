@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -22,7 +23,6 @@ namespace qMine.Controllers
             {
                 try
                 {
-                    //var serverCredentials = await GetServerCredentialsAsync(User.Identity.Name);
                     var serverCredentials = await new ServerCredentials().GetServerCredentialsAsync(User.Identity.Name);
                     var mineStat = new MineStat(serverCredentials.IP, (ushort)serverCredentials.Port);
                     var statusViewModel = new StatusViewModel(serverCredentials,mineStat);
@@ -114,13 +114,8 @@ namespace qMine.Controllers
 
         public string StatusText(ServerCredentials serverCredentials)
         {
-            var response = SSHSend("service " + serverCredentials.SSHMinecraftServiceName + @" status  |  grep -w 'INFO\|Active'",serverCredentials);
-
-            response = "<li class='list-group-item'>"
-                        + response.Replace(": [", ": </li> <li class='list-group-item'> [")
-                        + "</li>";
-
-            return response;
+            var response = SSHSend("service " + serverCredentials.SSHMinecraftServiceName + " status", serverCredentials);
+            return "<li class='list-group-item list-group-item-primary'>" + Regex.Replace(response.Substring(0, response.Length - 1), @"\t|\n|\r", "</li><li class='list-group-item list-group-item-secondary'>") + "</li>";
         }
 
         public string SSHSend(string Command, ServerCredentials serverCredentials)
@@ -158,9 +153,6 @@ namespace qMine.Controllers
             {
                 return "SSH Error: " + e.Message;
             }
-
-
         }
-
     }
 }
