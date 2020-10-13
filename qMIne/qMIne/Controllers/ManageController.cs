@@ -104,7 +104,7 @@ namespace qMine.Controllers
                 { 
                     await context.SaveChangesAsync();
                 }
-                catch (Exception ex)
+                catch 
                 {
                     RedirectToAction("Index", new { Message = ManageMessageId.SaveError });
                 }
