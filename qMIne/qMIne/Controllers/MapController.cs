@@ -1,32 +1,32 @@
 ﻿using qMine.Models;
 using qMineStat;
-using System.Web.Mvc;
-using System.Threading.Tasks;
 using System;
+using System.Web.Mvc;
 
 namespace qMIne.Controllers
 {
     public class MapController : Controller
     {
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
         {
             if (Request.IsAuthenticated)
             {
                 try
                 {
-                    var serverCredentials = await new ServerCredentials().GetServerCredentialsAsync(User.Identity.Name);
+                    var serverCredentials = new ServerCredentials().GetServerCredentials(User.Identity.Name);
 
 
-                    return View(new MapView {
-                                                ServerUp = new MineStat(serverCredentials.IP, (ushort)serverCredentials.Port).ServerUp,
-                                                MapUrl = serverCredentials.MapUrl
-                                            });
+                    return View(new MapView
+                    {
+                        ServerUp = new MineStat(serverCredentials.IP, (ushort)serverCredentials.Port).ServerUp,
+                        MapUrl = serverCredentials.MapUrl
+                    });
                 }
                 catch (Exception e)
                 {
                     return ViewBag.Error = e.Message;
                 }
-                
+
             }
             else
             {

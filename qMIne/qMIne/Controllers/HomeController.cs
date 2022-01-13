@@ -1,32 +1,31 @@
 ﻿using MinecraftServerRCON;
-using qMine.Context;
 using qMine.Models;
 using qMineStat;
 using Renci.SshNet;
 using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 
 namespace qMine.Controllers
 {
     public class HomeController : Controller
     {
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
         {
-           
+
             if (Request.IsAuthenticated)
             {
                 try
                 {
-                    var serverCredentials = await new ServerCredentials().GetServerCredentialsAsync(User.Identity.Name);
+                    var credentials = new ServerCredentials();
+
+                    var serverCredentials = credentials.GetServerCredentials(User.Identity.Name);
+                    if (serverCredentials == null)
+                        serverCredentials = credentials.CreateStock(User.Identity.Name);
+
                     var mineStat = new MineStat(serverCredentials.IP, (ushort)serverCredentials.Port);
-                    var statusViewModel = new StatusViewModel(serverCredentials,mineStat);
-                   
+                    var statusViewModel = new StatusViewModel(serverCredentials, mineStat);
+
                     return View(statusViewModel);
                 }
                 catch (Exception ex)
@@ -124,6 +123,9 @@ namespace qMine.Controllers
             {
                 return "SSH Error: Empty command";
             }
+
+            if (serverCredentials.SSHPassword == null)
+                return "SSH Error: Password is empty";
 
             ConnectionInfo ConnNfo = 
                 new ConnectionInfo(serverCredentials.IP, serverCredentials.SSHPort, serverCredentials.SSHLogin,

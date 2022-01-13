@@ -2,10 +2,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Web.Script.Serialization;
 
 namespace qMine.Models
 {
@@ -18,14 +15,14 @@ namespace qMine.Models
         public ServerCredentials() { }
 
         public ServerCredentials(
-                                string _Name, 
-                                string _IP = "127.0.0.1", 
-                                int _Port = 25565, 
-                                int _RconPort = 25575, 
-                                string _Password = "", 
-                                string _SSHLogin = "root", 
-                                string _SSHPassword = "", 
-                                int _SSHPort = 22, 
+                                string _Name,
+                                string _IP = "127.0.0.1",
+                                int _Port = 25565,
+                                int _RconPort = 25575,
+                                string _Password = "",
+                                string _SSHLogin = "root",
+                                string _SSHPassword = "",
+                                int _SSHPort = 22,
                                 string _SSHMinecraftServiceName = "",
                                 int _RefreshRate = 5000)
         {
@@ -40,6 +37,7 @@ namespace qMine.Models
             SSHMinecraftServiceName = _SSHMinecraftServiceName;
             RefreshRate = _RefreshRate;
         }
+
         /// <summary>
         /// Ключ
         /// </summary>
@@ -101,19 +99,39 @@ namespace qMine.Models
         [Display(Name = "Dynmap Link")]
         public string MapUrl { get; set; }
 
-        public async Task<ServerCredentials> GetServerCredentialsAsync(string UserName)
-        {
-            using (var context = new ApplicationDbContext())
-            {
-                return await context.ServerCredentials.Where(x => x.Name == UserName).FirstOrDefaultAsync();
-            }
-        }
-
         public ServerCredentials GetServerCredentials(string UserName)
         {
             using (var context = new ApplicationDbContext())
-            {
                 return context.ServerCredentials.FirstOrDefault(x => x.Name == UserName);
+        }
+
+        public ServerCredentials CreateStock(string UserName)
+        {
+            try
+            {
+                using (var context = new ApplicationDbContext())
+                {
+                    var credentials = new ServerCredentials
+                    {
+                        IP = "127.0.0.1",
+                        Port = 25565,
+                        Name = UserName,
+                        RconPort = 25575,
+                        RefreshRate = 3000,
+                        SSHLogin = "root",
+                        SSHPort = 22
+                    };
+
+                    context.ServerCredentials.Add(credentials);
+
+                    context.SaveChanges();
+
+                    return credentials;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
 
